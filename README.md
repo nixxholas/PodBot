@@ -1,5 +1,6 @@
 # HuShienBot
 An artifical variant of Mr Tan Hu Shien. 
+
 [![Build Status](https://travis-ci.org/nixxholas/HuShienBot.svg?branch=master)](https://travis-ci.org/nixxholas/HuShienBot) 
 
 
@@ -77,6 +78,9 @@ It looks like this:
   </runtime>
   </configuration>
 ``` 
+
+You'll then create your database within the project with this simple and easy guide.
+[### Implementing an SQL Server Database with Bot Framework](http://aihelpwebsite.com/Blog/EntryId/13/Implementing-A-SQL-Server-Database-With-The-Microsoft-Bot-Framework)
 
 Within the BasicDialog.cs, you'll notice that there'll be a line like this: 
 ```
