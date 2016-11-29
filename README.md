@@ -1,5 +1,6 @@
 # HuShienBot
-## An artifical variant of Mr Tan Hu Shien.
+An artifical variant of Mr Tan Hu Shien. 
+[![Build Status](https://travis-ci.org/nixxholas/HuShienBot.svg?branch=master)](https://travis-ci.org/nixxholas/HuShienBot) 
 
 
 
@@ -83,4 +84,4 @@ Within the BasicDialog.cs, you'll notice that there'll be a line like this:
 ```
 That is my LUIS Token, feel free to use it for my own contexts. However, you're advised to use your own LUIS token and LUIS Project 
 to build upon as I won't have similar data to what you have. What I've provided you so far is just a foundation for you to build upon. 
-You're strongly encouraged to revamp the database.
+You're strongly encouraged to revamp the database. 
