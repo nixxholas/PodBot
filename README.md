@@ -75,4 +75,12 @@ It looks like this:
     </assemblyBinding>
   </runtime>
   </configuration>
+``` 
+
+Within the BasicDialog.cs, you'll notice that there'll be a line like this: 
 ```
+[LuisModel("e01e77ec-d2a9-47a1-bf48-5c37ef5055ad", "3d9fbecb4439471ca22498c171ed9716")]
+```
+That is my LUIS Token, feel free to use it for my own contexts. However, you're advised to use your own LUIS token and LUIS Project 
+to build upon as I won't have similar data to what you have. What I've provided you so far is just a foundation for you to build upon. 
+You're strongly encouraged to revamp the database.
