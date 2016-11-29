@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="hushienDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Empathies">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" Nullable="false" />
+          <Property Name="description" Type="varchar(max)" />
+          <Property Name="url" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="Preaches">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" Nullable="false" />
+          <Property Name="preachType" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="preachSentence" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Timetable">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" Nullable="false" />
+          <Property Name="ModuleChar" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="ModuleFullName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ModuleClass" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="StartTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="EndTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="SlotDay" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="hushienDBModelStoreContainer">
+          <EntitySet Name="Empathies" EntityType="Self.Empathies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Preaches" EntityType="Self.Preaches" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Timetable" EntityType="Self.Timetable" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="hushienDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Empathy">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="url" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Preach">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="preachType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="preachSentence" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Timetable">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="ModuleChar" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ModuleFullName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ModuleClass" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StartTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="EndTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="SlotDay" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="hushienDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Empathies" EntityType="Self.Empathy" />
+          <EntitySet Name="Preaches" EntityType="Self.Preach" />
+          <EntitySet Name="Timetables" EntityType="Self.Timetable" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="hushienDBModelStoreContainer" CdmEntityContainer="hushienDBEntities">
+          <EntitySetMapping Name="Empathies">
+            <EntityTypeMapping TypeName="hushienDBModel.Empathy">
+              <MappingFragment StoreEntitySet="Empathies">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="url" ColumnName="url" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Preaches">
+            <EntityTypeMapping TypeName="hushienDBModel.Preach">
+              <MappingFragment StoreEntitySet="Preaches">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="preachType" ColumnName="preachType" />
+                <ScalarProperty Name="preachSentence" ColumnName="preachSentence" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Timetables">
+            <EntityTypeMapping TypeName="hushienDBModel.Timetable">
+              <MappingFragment StoreEntitySet="Timetable">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ModuleChar" ColumnName="ModuleChar" />
+                <ScalarProperty Name="ModuleFullName" ColumnName="ModuleFullName" />
+                <ScalarProperty Name="ModuleClass" ColumnName="ModuleClass" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="SlotDay" ColumnName="SlotDay" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
