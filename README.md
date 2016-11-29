@@ -1,10 +1,10 @@
 # HuShienBot
 An artifical variant of Mr Tan Hu Shien. 
-
+ 
 [![Build Status](https://travis-ci.org/nixxholas/HuShienBot.svg?branch=master)](https://travis-ci.org/nixxholas/HuShienBot) 
-
-
-
+ 
+ 
+ 
 ### Getting Started 
 Before you begin testing/deploying this bot, be sure to have a web.config prepared. 
 It looks like this: 
@@ -79,9 +79,9 @@ It looks like this:
   </configuration>
 ``` 
 
-You'll then create your database within the project with this simple and easy guide.
-[### Implementing an SQL Server Database with Bot Framework](http://aihelpwebsite.com/Blog/EntryId/13/Implementing-A-SQL-Server-Database-With-The-Microsoft-Bot-Framework)
-
+You'll then create your database within the project with this simple and easy guide: 
+[Implementing an SQL Server Database with Bot Framework](http://aihelpwebsite.com/Blog/EntryId/13/Implementing-A-SQL-Server-Database-With-The-Microsoft-Bot-Framework) 
+ 
 Within the BasicDialog.cs, you'll notice that there'll be a line like this: 
 ```
 [LuisModel("e01e77ec-d2a9-47a1-bf48-5c37ef5055ad", "3d9fbecb4439471ca22498c171ed9716")]
