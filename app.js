@@ -4,7 +4,8 @@ const http = require('http');
 const express = require('express');
 const restify = require('restify');
 const builder = require('botbuilder');
-const Client = require('instagram-private-api').V1;
+const passport = require('passport')
+  , OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
 
 //=========================================================
 // External API Setup
@@ -76,6 +77,8 @@ bot.dialog([
             //session.endDialog();
         }
     ],
+    // Function to help instantiate the automation to like within the pod's 
+    // community
     '/likeall', [
         function (session) {
             // Expect the bot to receive a reply from the user, thus use Prompts
