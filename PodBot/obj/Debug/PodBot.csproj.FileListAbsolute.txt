@@ -1,0 +1,42 @@
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\Bot Application.dll.config
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\Bot Application.dll
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\Bot Application.pdb
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\Autofac.dll
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\Chronic.dll
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\Microsoft.Bot.Builder.Autofac.dll
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\Microsoft.Bot.Builder.dll
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\Microsoft.Bot.Connector.dll
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\Microsoft.IdentityModel.Protocol.Extensions.dll
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\Microsoft.Rest.ClientRuntime.dll
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\Microsoft.WindowsAzure.Configuration.dll
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\Newtonsoft.Json.dll
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\System.IdentityModel.Tokens.Jwt.dll
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\System.Net.Http.Formatting.dll
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\System.Web.Http.dll
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\System.Web.Http.WebHost.dll
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\Autofac.xml
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\Microsoft.Bot.Builder.xml
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\Microsoft.Bot.Builder.Autofac.xml
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\Microsoft.Bot.Connector.xml
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\Microsoft.IdentityModel.Protocol.Extensions.pdb
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\Microsoft.IdentityModel.Protocol.Extensions.xml
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\Microsoft.WindowsAzure.Configuration.xml
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\Newtonsoft.Json.xml
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\System.IdentityModel.Tokens.Jwt.pdb
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\System.IdentityModel.Tokens.Jwt.xml
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\System.Net.Http.Formatting.xml
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\System.Web.Http.xml
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\System.Web.Http.WebHost.xml
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\ar\Microsoft.Bot.Builder.resources.dll
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\cs\Microsoft.Bot.Builder.resources.dll
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\de-dE\Microsoft.Bot.Builder.resources.dll
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\en\Microsoft.Bot.Builder.resources.dll
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\es\Microsoft.Bot.Builder.resources.dll
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\fa\Microsoft.Bot.Builder.resources.dll
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\fr\Microsoft.Bot.Builder.resources.dll
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\ja\Microsoft.Bot.Builder.resources.dll
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\ru\Microsoft.Bot.Builder.resources.dll
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\bin\zh-hans\Microsoft.Bot.Builder.resources.dll
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\obj\Debug\PodBot.csprojResolveAssemblyReference.cache
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\obj\Debug\Bot Application.dll
+\\Mac\Home\Documents\BotSourcex\PodBot\PodBot\obj\Debug\Bot Application.pdb
