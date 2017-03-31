@@ -1,0 +1,23 @@
+{
+  "name": "podbot",
+  "version": "1.0.0",
+  "description": "A simple IG Engagement expansion bot.",
+  "main": "app.js",
+  "scripts": {
+    "test": "/Greet"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nixxholas/PodBot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nixxholas/PodBot/issues"
+  },
+  "homepage": "https://github.com/nixxholas/PodBot#readme",
+  "dependencies": {
+    "botbuilder": "^3.7.0",
+    "restify": "^4.3.0"
+  }
+}
