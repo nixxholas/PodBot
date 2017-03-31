@@ -5,19 +5,11 @@ const express = require('express');
 const restify = require('restify');
 const builder = require('botbuilder');
 const passport = require('passport')
-  , OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
-
-//=========================================================
-// External API Setup
-//=========================================================
+  , InstagramStrategy = require('passport-instagram').Strategy;
 
 //=========================================================
 // Bot Setup
 //=========================================================
-
-// Setup the main process
-const app = express();
-app.set('port', 3979);
 
 // Setup Restify Server
 const server = restify.createServer();
@@ -34,84 +26,51 @@ const bot = new builder.UniversalBot(connector);
 server.post('/api/messages', connector.listen());
 
 //=========================================================
-// Instagram OAuth Setup
+// Passport Instagram OAuth Setup
 //=========================================================
+
+server.use(passport.initialize());
+server.use(passport.session());
 
 //=========================================================
 // Bots Dialogs
 //=========================================================
 
-const intents = new builder.IntentDialog();
-bot.dialog('/', intents);
-
-intents.matches(/^setupprofile/i, '/setupprofile')
-        .matches();
-
-intents.onDefault(
-    // On default, we'll do nothing.
-    function (session, args, next) {
+bot.dialog('/', new builder.IntentDialog()
+    .matches(/^set name/i, builder.DialogAction.beginDialog('/profile'))
+    .matches(/^quit/i, builder.DialogAction.endDialog())
+    .matches(/^what.+(best|favorite).+IDE/i, builder.DialogAction.beginDialog('/sourcelair'))
+    .matches(/^(\?|help)/i, builder.DialogAction.beginDialog('/help'))
+    .onDefault((session) => {
+        if (!session.userData.name) {
+            session.beginDialog('/profile');
+        } else {
+            session.send(`Hm, I did not understand you ${session.userData.name} :(`);
+        }
+    }));
+bot.dialog('/profile',  [
+    (session) => {
+        if (session.userData.name) {
+            builder.Prompts.text(session, 'What would you like to change it to?');
+        } else {
+            builder.Prompts.text(session, 'Hi! What is your name?');
+        }
+    },
+    (session, results) => {
+        session.userData.name = results.response;
+        session.send(`Hello ${session.userData.name}, it\'s great to meet you. I\'m PodBot.`);
+        session.endDialog();
     }
-);
-
-bot.dialog([
-    // Function to help instantiate the user's session with PodBot.
-    '/setupprofile', [
-        function (session) {
-            // Expect the bot to receive a reply from the user, thus use Prompts
-            builder.Prompts.text(session, 'Hi! What is your handle?');
-        },
-        function (session, results) {
-            // Retrieve the user's response
-            session.userData.name = results.response;
-
-            // Handle oAuth first
-
-            // Since we're done, display the user details as a card to let
-            // him know that we're done
-            var card = createThumbnailCard(session, session.userData.name);
-
-            // attach the card to the reply message
-            var msg = new builder.Message(session).addAttachment(card);
-            session.send(msg);
-            
-            //session.endDialog();
-        }
-    ],
-    // Function to help instantiate the automation to like within the pod's 
-    // community
-    '/likeall', [
-        function (session) {
-            // Expect the bot to receive a reply from the user, thus use Prompts
-            builder.Prompts.text(session, 'Hi! What is your handle?');
-        },
-        function (session, results) {
-            // Retrieve the user's response
-            session.userData.name = results.response;
-
-            // Handle oAuth first
-
-            // Since we're done, display the user details as a card to let
-            // him know that we're done
-            var card = createThumbnailCard(session, session.userData.name);
-
-            // attach the card to the reply message
-            var msg = new builder.Message(session).addAttachment(card);
-            session.send(msg);
-            
-            //session.endDialog();
-        }
-    ]
 ]);
-
-function createThumbnailCard(session, handle) {
-    return new builder.ThumbnailCard(session)
-        .title('BotFramework Thumbnail Card')
-        .subtitle('Your bots — wherever your users are talking')
-        .text('Build and connect intelligent bots to interact with your users naturally wherever they are, from text/sms to Skype, Slack, Office 365 mail and other popular services.')
-        .images([
-            builder.CardImage.create(session, 'https://sec.ch9.ms/ch9/7ff5/e07cfef0-aa3b-40bb-9baa-7c9ef8ff7ff5/buildreactionbotframework_960.jpg')
-        ])
-        .buttons([
-            builder.CardAction.openUrl(session, `https://instagram.com/${handle}`, 'Your Profile')
-        ]);
-}
+bot.dialog('/sourcelair',  [
+    (session) => {
+        session.send('It\'s SourceLair of course <3');
+        session.endDialog();
+    }
+]);
+bot.dialog('/help', [
+    (session) => {
+        session.send('You can always ask me some questions, for example what is my favorite IDE');
+        session.endDialog();
+    }
+]);
