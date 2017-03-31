@@ -40,6 +40,7 @@ bot.dialog('/', new builder.IntentDialog()
     .matches(/^set name/i, builder.DialogAction.beginDialog('/profile'))
     .matches(/^quit/i, builder.DialogAction.endDialog())
     .matches(/^what.+(best|favorite).+IDE/i, builder.DialogAction.beginDialog('/sourcelair'))
+    .matches(/^listall/i, builder.DialogAction.beginDialog('/listall'))
     .matches(/^(\?|help)/i, builder.DialogAction.beginDialog('/help'))
     .onDefault((session) => {
         if (!session.userData.name) {
@@ -59,6 +60,12 @@ bot.dialog('/profile',  [
     (session, results) => {
         session.userData.name = results.response;
         session.send(`Hello ${session.userData.name}, it\'s great to meet you. I\'m PodBot.`);
+        session.endDialog();
+    }
+]);
+bot.dialog('/listall',  [
+    (session) => {
+        session.send('Here\'s all the posts that are posted today:');
         session.endDialog();
     }
 ]);
