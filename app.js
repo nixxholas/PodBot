@@ -4,14 +4,11 @@ const http = require('http');
 const express = require('express');
 const restify = require('restify');
 const builder = require('botbuilder');
-const ig = require('instagram-node').instagram();
+const Client = require('instagram-private-api').V1;
 
 //=========================================================
 // External API Setup
 //=========================================================
-
-ig.use({ client_id: process.env.INSTAGRAM_CLIENT_ID,
-         client_secret: process.env.INSTAGRAM_CLIENT_SECRET });
 
 //=========================================================
 // Bot Setup
@@ -19,6 +16,7 @@ ig.use({ client_id: process.env.INSTAGRAM_CLIENT_ID,
 
 // Setup the main process
 const app = express();
+app.set('port', 3979);
 
 // Setup Restify Server
 const server = restify.createServer();
@@ -38,31 +36,6 @@ server.post('/api/messages', connector.listen());
 // Instagram OAuth Setup
 //=========================================================
 
-exports.authorize_user = function(req, res) {
-  res.redirect(api.get_authorization_url(redirect_uri, { scope: ['likes'], state: 'a state' }));
-};
- 
-exports.handleauth = function(req, res) {
-  api.authorize_user(req.query.code, redirect_uri, function(err, result) {
-    if (err) {
-      console.log(err.body);
-      res.send("Didn't work");
-    } else {
-      console.log('Yay! Access token is ' + result.access_token);
-      res.send('You made it!!');
-    }
-  });
-};
- 
-// This is where you would initially send users to authorize 
-app.get('/authorize_user', exports.authorize_user);
-// This is your redirect URI 
-app.get('/handleauth', exports.handleauth);
- 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log("Express server listening on port " + app.get('port'));
-});
-
 //=========================================================
 // Bots Dialogs
 //=========================================================
@@ -79,30 +52,52 @@ intents.onDefault(
     }
 );
 
-bot.dialog('/setupprofile', [
-    function (session) {
-        // Expect the bot to receive a reply from the user, thus use Prompts
-        builder.Prompts.text(session, 'Hi! What is your handle?');
-    },
-    function (session, results) {
-        // Retrieve the user's response
-        session.userData.name = results.response;
+bot.dialog([
+    // Function to help instantiate the user's session with PodBot.
+    '/setupprofile', [
+        function (session) {
+            // Expect the bot to receive a reply from the user, thus use Prompts
+            builder.Prompts.text(session, 'Hi! What is your handle?');
+        },
+        function (session, results) {
+            // Retrieve the user's response
+            session.userData.name = results.response;
 
-        var card = createThumbnailCard(session, session.userData.name);
+            // Handle oAuth first
 
-        
-var access_token = "ACCESS_TOKEN";   
-var user_id = "USER_ID";
-var url = "https://api.instagram.com/v1/users/"+user_id+"?access_token="+access_token+"&callback=?";
-$.getJSON(url, function(data) {
-    $("body").append("<img src='"+data.data.profile_picture+"' />");
-});
-        // attach the card to the reply message
-        var msg = new builder.Message(session).addAttachment(card);
-        session.send(msg);
-        
-        //session.endDialog();
-    }
+            // Since we're done, display the user details as a card to let
+            // him know that we're done
+            var card = createThumbnailCard(session, session.userData.name);
+
+            // attach the card to the reply message
+            var msg = new builder.Message(session).addAttachment(card);
+            session.send(msg);
+            
+            //session.endDialog();
+        }
+    ],
+    '/likeall', [
+        function (session) {
+            // Expect the bot to receive a reply from the user, thus use Prompts
+            builder.Prompts.text(session, 'Hi! What is your handle?');
+        },
+        function (session, results) {
+            // Retrieve the user's response
+            session.userData.name = results.response;
+
+            // Handle oAuth first
+
+            // Since we're done, display the user details as a card to let
+            // him know that we're done
+            var card = createThumbnailCard(session, session.userData.name);
+
+            // attach the card to the reply message
+            var msg = new builder.Message(session).addAttachment(card);
+            session.send(msg);
+            
+            //session.endDialog();
+        }
+    ]
 ]);
 
 function createThumbnailCard(session, handle) {
