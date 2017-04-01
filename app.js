@@ -105,6 +105,7 @@ bot.dialog('/', new builder.IntentDialog()
     .matches(/^(\?|help)/i, builder.DialogAction.beginDialog('/help'))
     .onDefault((session) => {
         session.sendTyping();
+
         if (!session.userData.name) {
             session.beginDialog('/profile');
         } else {
@@ -117,7 +118,7 @@ bot.dialog('/profile',  [
         if (session.userData.name) {
             builder.Prompts.text(session, 'What would you like to change it to?');
         } else {
-            builder.Prompts.text(session, 'Hey! What is your instagram handle?');
+            builder.Prompts.text(session, 'Hello! What is your instagram handle?');
         }
     },
     (session, results, next) => {
@@ -160,13 +161,14 @@ bot.dialog('/addpost',  [
     (session, results) => {
         session.sendTyping();
         
-        telegrambot.sendMessage(process.env.TELEGRAM_CHANNEL_ID, results.response, 
+        telegrambot.sendPhoto(process.env.TELEGRAM_CHANNEL_ID, results.response, 
         // Optional Variables
         {
+            caption: `By ${session.userData.handle}`,
             reply_markup: JSON.stringify({
                 inline_keyboard: [
-                [{ text: 'Post Link', url: results.response }],
-                //[{ text: 'Some button text 2', callback_data: '2' }],
+                [{ text: 'View Post', url: results.response }],
+                //[{ text: 'Like Post', url: '2' }],
                 //[{ text: 'Some button text 3', callback_data: '3' }]
                 ]
             })
