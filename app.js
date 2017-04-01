@@ -30,7 +30,7 @@ const connector = new builder.ChatConnector({
     appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 const bot = new builder.UniversalBot(connector);
-const telegrambot = new TelegramBotAPI(process.env.TELEGRAM_BOT_TOKEN, {polling: true});
+const telegrambot = new TelegramBotAPI(process.env.TELEGRAM_BOT_TOKEN, {polling: false});
 server.post('/api/messages', connector.listen());
 
 // Create a bot that uses 'polling' to fetch new updates
