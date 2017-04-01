@@ -66,33 +66,33 @@ server.use(passport.session());
 
 server.get('/auth/instagram', passport.authenticate('instagram-token'));
 
-server.on('conversationUpdate', function (message) {
-    if (message.membersAdded && message.membersAdded.length > 0) {
-        var membersAdded = message.membersAdded
-            .map(function (m) {
-                var isSelf = m.id === message.address.bot.id;
-                return (isSelf ? message.address.bot.name : m.name) || '' + ' (Id: ' + m.id + ')';
-            })
-            .join(', ');
+// server.on('conversationUpdate', function (message) {
+//     if (message.membersAdded && message.membersAdded.length > 0) {
+//         var membersAdded = message.membersAdded
+//             .map(function (m) {
+//                 var isSelf = m.id === message.address.bot.id;
+//                 return (isSelf ? message.address.bot.name : m.name) || '' + ' (Id: ' + m.id + ')';
+//             })
+//             .join(', ');
 
-        bot.send(new builder.Message()
-            .address(message.address)
-            .text('Welcome ' + membersAdded));
-    }
+//         bot.send(new builder.Message()
+//             .address(message.address)
+//             .text('Welcome ' + membersAdded));
+//     }
 
-    if (message.membersRemoved && message.membersRemoved.length > 0) {
-        var membersRemoved = message.membersRemoved
-            .map(function (m) {
-                var isSelf = m.id === message.address.bot.id;
-                return (isSelf ? message.address.bot.name : m.name) || '' + ' (Id: ' + m.id + ')';
-            })
-            .join(', ');
+//     if (message.membersRemoved && message.membersRemoved.length > 0) {
+//         var membersRemoved = message.membersRemoved
+//             .map(function (m) {
+//                 var isSelf = m.id === message.address.bot.id;
+//                 return (isSelf ? message.address.bot.name : m.name) || '' + ' (Id: ' + m.id + ')';
+//             })
+//             .join(', ');
 
-        bot.send(new builder.Message()
-            .address(message.address)
-            .text('The following members ' + membersRemoved + ' were removed or left the conversation :('));
-    }
-});
+//         bot.send(new builder.Message()
+//             .address(message.address)
+//             .text('The following members ' + membersRemoved + ' were removed or left the conversation :('));
+//     }
+// });
 
 //=========================================================
 // BotFramework Dialogs
