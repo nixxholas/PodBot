@@ -20,7 +20,7 @@ var UserList = new Array();
 
 // Setup Restify Server
 const server = restify.createServer();
-server.listen(process.env.port || process.env.PORT  , function () {
+server.listen(process.env.port || process.env.PORT, function () {
    console.log('%s listening to %s', server.name, server.url); 
 });
   
@@ -31,7 +31,7 @@ const connector = new builder.ChatConnector({
 });
 const bot = new builder.UniversalBot(connector);
 const telegrambot = new TelegramBotAPI(process.env.TELEGRAM_BOT_TOKEN, {polling: true});
-server.post('/api/messages', connector.listen());
+server.post('/', connector.listen());
 
 //=========================================================
 // Variable
@@ -61,6 +61,34 @@ server.use(passport.session());
 //=========================================================
 
 server.get('/auth/instagram', passport.authenticate('instagram-token'));
+
+server.on('conversationUpdate', function (message) {
+    if (message.membersAdded && message.membersAdded.length > 0) {
+        var membersAdded = message.membersAdded
+            .map(function (m) {
+                var isSelf = m.id === message.address.bot.id;
+                return (isSelf ? message.address.bot.name : m.name) || '' + ' (Id: ' + m.id + ')';
+            })
+            .join(', ');
+
+        bot.send(new builder.Message()
+            .address(message.address)
+            .text('Welcome ' + membersAdded));
+    }
+
+    if (message.membersRemoved && message.membersRemoved.length > 0) {
+        var membersRemoved = message.membersRemoved
+            .map(function (m) {
+                var isSelf = m.id === message.address.bot.id;
+                return (isSelf ? message.address.bot.name : m.name) || '' + ' (Id: ' + m.id + ')';
+            })
+            .join(', ');
+
+        bot.send(new builder.Message()
+            .address(message.address)
+            .text('The following members ' + membersRemoved + ' were removed or left the conversation :('));
+    }
+});
 
 //=========================================================
 // BotFramework Dialogs
