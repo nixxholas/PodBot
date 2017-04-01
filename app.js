@@ -7,7 +7,7 @@ const builder = require('botbuilder');
 const passport = require('passport')
   , InstagramStrategy = require('passport-instagram').Strategy
   , InstagramTokenStrategy = require('passport-instagram-token');
-const instagram = require('node-instagram');
+//const instagram = require('node-instagram');
 const TelegramBotAPI = require('node-telegram-bot-api');
 
 //=========================================================
@@ -29,13 +29,13 @@ const connector = new builder.ChatConnector({
     appId: process.env.MICROSOFT_APP_ID,
     appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
+server.post('/', connector.listen());
+
 const bot = new builder.UniversalBot(connector);
 
 // const telegrambot = new TelegramBotAPI(process.env.TELEGRAM_BOT_TOKEN, {polling: true});
 // telegrambot.setWebHook(`https://http://igpodbot.azurewebsites.net/api/messages/bot${process.env.TELEGRAM_BOT_TOKEN}`, {
 // });
-
-server.post('/', connector.listen());
 
 //=========================================================
 // Variable
