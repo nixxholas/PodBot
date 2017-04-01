@@ -19,7 +19,7 @@ var UserList = new Array();
 
 // Setup Restify Server
 const server = restify.createServer();
-server.listen(process.env.port, function () {
+server.listen(process.env.port || process.env.PORT, function () {
    console.log('%s listening to %s', server.name, server.url); 
 });
   
@@ -29,6 +29,7 @@ const connector = new builder.ChatConnector({
     appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 const bot = new builder.UniversalBot(connector);
+server.post('/api/messages', connector.listen());
 
 //=========================================================
 // Passport Instagram OAuth Setup
@@ -52,7 +53,6 @@ server.use(passport.session());
 //=========================================================
 
 server.get('/auth/instagram', passport.authenticate('instagram-token'));
-server.post('/api/messages', connector.listen());
 
 //=========================================================
 // Bots Dialogs
