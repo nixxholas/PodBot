@@ -18,14 +18,18 @@
   },
   "homepage": "https://github.com/nixxholas/PodBot#readme",
   "dependencies": {
+    "bip-pod-instagram": "^0.4.0",
     "botbuilder": "^3.7.0",
     "cookie-session": "^2.0.0-beta.1",
     "dotenv": "^4.0.0",
     "express": "^4.15.2",
     "http": "0.0.0",
     "instagram-node": "^0.5.8",
+    "instagram-nodejs-without-api": "0.0.6",
+    "node-instagram": "^1.4.0",
     "passport": "^0.3.2",
     "passport-instagram": "^1.0.0",
+    "passport-instagram-token": "^2.3.0",
     "restify": "^4.3.0",
     "restify-cookies": "^0.2.2",
     "socket.io": "^1.7.3"

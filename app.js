@@ -5,7 +5,9 @@ const express = require('express');
 const restify = require('restify');
 const builder = require('botbuilder');
 const passport = require('passport')
-  , InstagramStrategy = require('passport-instagram').Strategy;
+  , InstagramStrategy = require('passport-instagram').Strategy
+  , InstagramTokenStrategy = require('passport-instagram-token');
+const instagram = require('node-instagram');
 
 //=========================================================
 // Bot Setup
@@ -33,6 +35,16 @@ server.post('/api/messages', connector.listen());
 // Passport Instagram OAuth Setup
 //=========================================================
 
+passport.use(new InstagramTokenStrategy({
+    clientID: process.env.INSTAGRAM_CLIENT_ID,
+    clientSecret: process.env.INSTAGRAM_CLIENT_SECRET,
+    passReqToCallback: true
+}, function(req, accessToken, refreshToken, profile, next) {
+    User.findOrCreate({'instagram.id': profile.id}, function(error, user) {
+        return next(error, user);
+    });
+}));
+
 server.use(passport.initialize());
 server.use(passport.session());
 
@@ -51,6 +63,7 @@ bot.dialog('/', new builder.IntentDialog()
     .matches(/^listall/i, builder.DialogAction.beginDialog('/listall'))
     .matches(/^(\?|help)/i, builder.DialogAction.beginDialog('/help'))
     .onDefault((session) => {
+        session.sendTyping();
         if (!session.userData.name) {
             session.beginDialog('/profile');
         } else {
@@ -59,6 +72,7 @@ bot.dialog('/', new builder.IntentDialog()
     }));
 bot.dialog('/profile',  [
     (session) => {
+        session.sendTyping();
         if (session.userData.name) {
             builder.Prompts.text(session, 'What would you like to change it to?');
         } else {
@@ -66,30 +80,36 @@ bot.dialog('/profile',  [
         }
     },
     (session, results, next) => {
+        session.sendTyping();
         if (results.response) {
             session.userData.handle = results.response;
-            builder.Prompts.time(session, "What's your name?");
+            builder.Prompts.text(session, "What's your name?");
         } else {
             next();
         }
     },
     (session, results) => {
+        session.sendTyping();
         session.userData.name = results.response;
 
+        // Passport JS Authentication
+
         var User = new User(session.userData.handle ,session.userData.name);
-        
+
         session.send(`Hello ${session.userData.name}, it\'s great to meet you. I\'m PodBot.`);
         session.endDialog();
     }
 ]);
 bot.dialog('/listall',  [
     (session) => {
+        session.sendTyping();
         session.send('Here\'s all the posts that are posted today:');
         session.endDialog();
     }
 ]);
 bot.dialog('/addpost',  [
     (session) => {
+        session.sendTyping();
         if (session.userData.name) { // If the user has setup a handle
             builder.Prompts.text(session, 'Simply toss in your post URL.');
         } else {
@@ -97,6 +117,7 @@ bot.dialog('/addpost',  [
         }
     },
     (session, results) => {
+        session.sendTyping();
         session.userData.name = results.response;
         session.send(`Hello ${session.userData.name}, it\'s great to meet you. I\'m PodBot.`);
         session.endDialog();
@@ -104,6 +125,7 @@ bot.dialog('/addpost',  [
 ]);
 bot.dialog('/help', [
     (session) => {
+        session.sendTyping();
         session.send('PodBot Commands: \n' +
         '- ');
         session.endDialog();
