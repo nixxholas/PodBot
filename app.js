@@ -162,12 +162,15 @@ bot.dialog('/addpost',  [
         
         telegrambot.sendMessage(process.env.TELEGRAM_CHANNEL_ID, results.response, 
         // Optional Variables
-        [{reply_markup:[
-             { inline_keyboard: 
-                    { text: "Like", url: results.response }
-                } 
-            ]},
-        ]);
+        {
+            reply_markup: JSON.stringify({
+                inline_keyboard: [
+                [{ text: 'Post Link', url: results.response }],
+                //[{ text: 'Some button text 2', callback_data: '2' }],
+                //[{ text: 'Some button text 3', callback_data: '3' }]
+                ]
+            })
+        });
  
         session.endDialog();
     }
