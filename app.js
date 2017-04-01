@@ -20,7 +20,7 @@ var UserList = new Array();
 
 // Setup Restify Server
 const server = restify.createServer();
-server.listen(process.env.port || process.env.PORT, function () {
+server.listen(process.env.port || process.env.PORT || 3798, function () {
    console.log('%s listening to %s', server.name, server.url); 
 });
   
