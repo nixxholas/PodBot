@@ -8,6 +8,7 @@ const passport = require('passport')
   , InstagramStrategy = require('passport-instagram').Strategy
   , InstagramTokenStrategy = require('passport-instagram-token');
 const instagram = require('node-instagram');
+const TelegramBotAPI = require('node-telegram-bot-api');
 
 //=========================================================
 // Bot Setup
@@ -30,6 +31,15 @@ const connector = new builder.ChatConnector({
 });
 const bot = new builder.UniversalBot(connector);
 server.post('/api/messages', connector.listen());
+
+// Create a bot that uses 'polling' to fetch new updates
+//const telegrambot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
+
+//=========================================================
+// Variable
+//=========================================================
+
+const testSendMessageURL = `https://api.telegram.org/${process.env.TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=@hypethepod&text=Testing%20if%20this%20works`;
 
 //=========================================================
 // Passport Instagram OAuth Setup
@@ -124,7 +134,7 @@ bot.dialog('/profile',  [
 
         // Passport JS Authentication
 
-        var User = new User(session.userData.handle ,session.userData.name);
+        //var User = new User(session.userData.handle ,session.userData.name);
 
         session.send(`Hello ${session.userData.name}, it\'s great to meet you. I\'m PodBot.`);
         session.endDialog();
@@ -148,8 +158,23 @@ bot.dialog('/addpost',  [
     },
     (session, results) => {
         session.sendTyping();
-        session.userData.name = results.response;
-        session.send(`Hello ${session.userData.name}, it\'s great to meet you. I\'m PodBot.`);
+        
+        var options = {
+        host: url,
+        port: 80,
+        path: testSendMessageURL,
+        method: 'POST'
+        };
+
+        http.request(options, function(res) {
+        console.log('STATUS: ' + res.statusCode);
+        console.log('HEADERS: ' + JSON.stringify(res.headers));
+        res.setEncoding('utf8');
+        res.on('data', function (chunk) {
+            console.log('BODY: ' + chunk);
+        });
+        }).end();
+
         session.endDialog();
     }
 ]);
