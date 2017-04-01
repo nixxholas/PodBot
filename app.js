@@ -11,6 +11,10 @@ const passport = require('passport')
 // Bot Setup
 //=========================================================
 
+// Define some entities to help with storage
+var LikeList = new Array();
+var UserList = new Array();
+
 // Setup Restify Server
 const server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {
@@ -33,13 +37,17 @@ server.use(passport.initialize());
 server.use(passport.session());
 
 //=========================================================
+// Accessible Variables
+//=========================================================
+
+//=========================================================
 // Bots Dialogs
 //=========================================================
 
 bot.dialog('/', new builder.IntentDialog()
     .matches(/^set name/i, builder.DialogAction.beginDialog('/profile'))
     .matches(/^quit/i, builder.DialogAction.endDialog())
-    .matches(/^what.+(best|favorite).+IDE/i, builder.DialogAction.beginDialog('/sourcelair'))
+    .matches(/^add post/i, builder.DialogAction.beginDialog('/addpost'))
     .matches(/^listall/i, builder.DialogAction.beginDialog('/listall'))
     .matches(/^(\?|help)/i, builder.DialogAction.beginDialog('/help'))
     .onDefault((session) => {
@@ -54,11 +62,22 @@ bot.dialog('/profile',  [
         if (session.userData.name) {
             builder.Prompts.text(session, 'What would you like to change it to?');
         } else {
-            builder.Prompts.text(session, 'Hi! What is your name?');
+            builder.Prompts.text(session, 'Hey! What is your instagram handle?');
+        }
+    },
+    (session, results, next) => {
+        if (results.response) {
+            session.userData.handle = results.response;
+            builder.Prompts.time(session, "What's your name?");
+        } else {
+            next();
         }
     },
     (session, results) => {
         session.userData.name = results.response;
+
+        var User = new User(session.userData.handle ,session.userData.name);
+        
         session.send(`Hello ${session.userData.name}, it\'s great to meet you. I\'m PodBot.`);
         session.endDialog();
     }
@@ -69,15 +88,24 @@ bot.dialog('/listall',  [
         session.endDialog();
     }
 ]);
-bot.dialog('/sourcelair',  [
+bot.dialog('/addpost',  [
     (session) => {
-        session.send('It\'s SourceLair of course <3');
+        if (session.userData.name) { // If the user has setup a handle
+            builder.Prompts.text(session, 'Simply toss in your post URL.');
+        } else {
+            session.beginDialog('/profile');
+        }
+    },
+    (session, results) => {
+        session.userData.name = results.response;
+        session.send(`Hello ${session.userData.name}, it\'s great to meet you. I\'m PodBot.`);
         session.endDialog();
     }
 ]);
 bot.dialog('/help', [
     (session) => {
-        session.send('You can always ask me some questions, for example what is my favorite IDE');
+        session.send('PodBot Commands: \n' +
+        '- ');
         session.endDialog();
     }
 ]);
