@@ -20,7 +20,7 @@ var UserList = new Array();
 
 // Setup Restify Server
 const server = restify.createServer();
-server.listen(process.env.port || process.env.PORT, function () {
+server.listen(process.env.port || process.env.PORT  , function () {
    console.log('%s listening to %s', server.name, server.url); 
 });
   
@@ -30,11 +30,8 @@ const connector = new builder.ChatConnector({
     appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 const bot = new builder.UniversalBot(connector);
-const telegrambot = new TelegramBotAPI(process.env.TELEGRAM_BOT_TOKEN, {polling: false});
+const telegrambot = new TelegramBotAPI(process.env.TELEGRAM_BOT_TOKEN, {polling: true});
 server.post('/api/messages', connector.listen());
-
-// Create a bot that uses 'polling' to fetch new updates
-//const telegrambot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
 
 //=========================================================
 // Variable
@@ -165,6 +162,8 @@ bot.dialog('/addpost',  [
         // Optional Variables
         {
             caption: `By ${session.userData.handle}`,
+            // Adding option objects
+            // https://github.com/yagop/node-telegram-bot-api/issues/109
             reply_markup: JSON.stringify({
                 inline_keyboard: [
                 [{ text: 'View Post', url: results.response }],
