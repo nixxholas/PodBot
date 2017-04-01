@@ -160,15 +160,17 @@ bot.dialog('/addpost',  [
     (session, results) => {
         session.sendTyping();
         
-        telegrambot.sendMessage(process.env.TELEGRAM_CHANNEL_ID, results.response);
-
+        telegrambot.sendMessage(process.env.TELEGRAM_CHANNEL_ID, results.response, 
+        // Optional Variables
+        { reply_markup: [{text: "Like", url: "results.response"}] });
+ 
         session.endDialog();
     }
 ]); 
 bot.dialog('/help', [
     (session) => {
         session.sendTyping();
-        session.send('PodBot Commands: \n' +
+        session.send('PodBot Commands: \n/' +
         '- ');
         session.endDialog();
     }
