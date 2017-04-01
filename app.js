@@ -160,11 +160,11 @@ bot.dialog('/addpost',  [
     (session, results) => {
         session.sendTyping();
         
-        telegrambot.sendMessage(process.env.TELEGRAM_CHANNEL_ID, 'Received your message');
+        telegrambot.sendMessage(process.env.TELEGRAM_CHANNEL_ID, results.response);
 
         session.endDialog();
     }
-]);
+]); 
 bot.dialog('/help', [
     (session) => {
         session.sendTyping();
