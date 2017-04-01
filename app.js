@@ -162,7 +162,9 @@ bot.dialog('/addpost',  [
         
         telegrambot.sendMessage(process.env.TELEGRAM_CHANNEL_ID, results.response, 
         // Optional Variables
-        { reply_markup: [{text: "Like", url: "results.response"}] });
+        [ { reply_markup: 
+                [ {text: "Like", url: results.response} ] },
+        ]);
  
         session.endDialog();
     }
