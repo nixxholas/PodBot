@@ -29,7 +29,6 @@ const connector = new builder.ChatConnector({
     appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 const bot = new builder.UniversalBot(connector);
-server.post('/api/messages', connector.listen());
 
 //=========================================================
 // Passport Instagram OAuth Setup
@@ -49,8 +48,11 @@ server.use(passport.initialize());
 server.use(passport.session());
 
 //=========================================================
-// Accessible Variables
+// Bot API
 //=========================================================
+
+server.get('/auth/instagram', passport.authenticate('instagram-token'));
+server.post('/api/messages', connector.listen());
 
 //=========================================================
 // Bots Dialogs
