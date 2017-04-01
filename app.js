@@ -30,6 +30,7 @@ const connector = new builder.ChatConnector({
     appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 const bot = new builder.UniversalBot(connector);
+const telegrambot = new TelegramBotAPI(process.env.TELEGRAM_BOT_TOKEN, {polling: true});
 server.post('/api/messages', connector.listen());
 
 // Create a bot that uses 'polling' to fetch new updates
@@ -39,7 +40,7 @@ server.post('/api/messages', connector.listen());
 // Variable
 //=========================================================
 
-const ChannelBroadcastURL = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=@hypethepod&text=`;
+const ChannelBroadcastURL = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${process.env.TELEGRAM_CHANNEL_ID}&text=`;
 
 //=========================================================
 // Passport Instagram OAuth Setup
@@ -59,7 +60,7 @@ server.use(passport.initialize());
 server.use(passport.session());
 
 //=========================================================
-// Bot API
+// BotFramework API
 //=========================================================
 
 server.get('/auth/instagram', passport.authenticate('instagram-token'));
@@ -93,7 +94,7 @@ server.on('conversationUpdate', function (message) {
 });
 
 //=========================================================
-// Bots Dialogs
+// BotFramework Dialogs
 //=========================================================
 
 bot.dialog('/', new builder.IntentDialog()
@@ -159,6 +160,7 @@ bot.dialog('/addpost',  [
     (session, results) => {
         session.sendTyping();
         
+        telegrambot.sendMessage(process.env.TELEGRAM_CHANNEL_ID, 'Received your message');
 
         session.endDialog();
     }
@@ -171,3 +173,7 @@ bot.dialog('/help', [
         session.endDialog();
     }
 ]);
+
+//=========================================================
+// Telegram Functions & Dialogs
+//=========================================================
