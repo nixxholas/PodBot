@@ -39,7 +39,7 @@ server.post('/api/messages', connector.listen());
 // Variable
 //=========================================================
 
-const testSendMessageURL = `https://api.telegram.org/${process.env.TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=@hypethepod&text=Testing%20if%20this%20works`;
+const ChannelBroadcastURL = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=@hypethepod&text=`;
 
 //=========================================================
 // Passport Instagram OAuth Setup
@@ -159,21 +159,6 @@ bot.dialog('/addpost',  [
     (session, results) => {
         session.sendTyping();
         
-        var options = {
-        host: url,
-        port: 80,
-        path: testSendMessageURL,
-        method: 'POST'
-        };
-
-        http.request(options, function(res) {
-        console.log('STATUS: ' + res.statusCode);
-        console.log('HEADERS: ' + JSON.stringify(res.headers));
-        res.setEncoding('utf8');
-        res.on('data', function (chunk) {
-            console.log('BODY: ' + chunk);
-        });
-        }).end();
 
         session.endDialog();
     }
