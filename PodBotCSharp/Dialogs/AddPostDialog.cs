@@ -15,24 +15,16 @@ namespace PodBotCSharp.Dialogs
         public async Task StartAsync(IDialogContext context)
         {
             // Debugging Purposes
-            await context.PostAsync("Running AddPostDialog");
-
-            context.Wait(MessageReceivedAsync);
-        }
-
-        private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
-        {
-            var activity = await result as Activity;
+            //await context.PostAsync("Running AddPostDialog");
 
             // Handling conversational information
             // https://www.youtube.com/watch?v=TyrpJBM3nJU
             await context.PostAsync("Can I have the URL to the post?");
 
-            // Head to the next method and wait for the reply
-            context.Wait(ProcessPostData);
+            context.Wait(MessageReceivedAsync);
         }
 
-        private async Task ProcessPostData(IDialogContext context, IAwaitable<object> result)
+        private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
         {
             var activity = await result as Activity;
 
@@ -61,7 +53,7 @@ namespace PodBotCSharp.Dialogs
                     await context.PostAsync("Please enter a valid url.");
 
                     // Loop this method
-                    context.Wait(ProcessPostData);
+                    context.Wait(MessageReceivedAsync);
                 }
             }
 
@@ -109,8 +101,9 @@ namespace PodBotCSharp.Dialogs
             // Show the user a preview and post the data to the telegram channel
             await context.PostAsync(message);
 
-            await WebApiConfig.TelegramHook.SendTextMessageAsync("@HypeThePod", "Hello teLEGRAM");
-
+            // Telegram Hook Test
+            //await WebApiConfig.TelegramHook.SendTextMessageAsync("@HypeThePod", "Hello teLEGRAM");
+            
             context.Done(new object());
         }
     }
