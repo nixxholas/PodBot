@@ -20,6 +20,9 @@ namespace PodBotCSharp.Dialogs
         {
             var activity = await result as Activity;
 
+            // Debugging Purposes
+            await context.PostAsync("activity.Text:" + activity.Text);
+
             await context.PostAsync("Sorry I didn't get you.");
 
             context.Wait(MessageReceivedAsync);

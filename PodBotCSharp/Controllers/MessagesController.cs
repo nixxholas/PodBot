@@ -20,7 +20,6 @@ namespace PodBotCSharp
         {
             if (activity.Type == ActivityTypes.Message)
             {
-                Console.WriteLine(activity.Text);
                 switch (activity.Text)
                 {
                     case "addpost":
