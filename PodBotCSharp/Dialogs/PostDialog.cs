@@ -4,6 +4,8 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using System.Web.Configuration;
 using System.Collections.Generic;
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
 
 namespace PodBotCSharp.Dialogs
 {
@@ -36,8 +38,6 @@ namespace PodBotCSharp.Dialogs
                     await context.PostAsync("Sorry I didn't get you.");
                     break;
             }
-
-            context.Wait(MessageReceivedAsync);
         }
 
         private async Task ProcessPostData(IDialogContext context, IAwaitable<object> result)
@@ -46,27 +46,62 @@ namespace PodBotCSharp.Dialogs
 
             // We need to run a url check but i'll ignore that for now
             
+            // Call Instagram's oembed API to retrieve post metadata
+            string OembedAPIURL = "https://api.instagram.com/oembed?url=" + activity.Text;
+
+            // JObject Initialization
+            JObject jObject = new JObject();
+
+            using (HttpClient client = new HttpClient())
+            {
+                HttpResponseMessage response =
+                        client.GetAsync(OembedAPIURL).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Retrieve the result of the response
+                    var msg = response.Content.ReadAsStringAsync().Result;
+
+                    jObject = JObject.Parse(msg);
+                } else
+                {
+                    await context.PostAsync("Please enter a valid url.");
+
+                    // Loop this method
+                    context.Wait(ProcessPostData);
+                }
+            }
+
+            // Successful Data Retrieval
             await context.PostAsync("Okay! I'll broadcast your post for you!");
 
             // Create the card images
             List<CardImage> cardImages = new List<CardImage>();
-            cardImages.Add(new CardImage(url: activity.Text));
+            cardImages.Add(new CardImage(url: (string) jObject["thumbnail_url"]));
 
             // Create the action buttons for the card first
-            List<CardAction> cardButtons = new List<CardAction>();
-            CardAction plButton = new CardAction()
+            List <CardAction> cardButtons = new List<CardAction>();
+
+            CardAction ViewPostButton = new CardAction()
             {
                 Value = activity.Text,
                 Type = "openUrl",
-                Title = "Like"
+                Title = "View Post"
             };
-            cardButtons.Add(plButton);
+            CardAction ProfileButton = new CardAction()
+            {
+                Value = activity.Text,
+                Type = "openUrl",
+                Title = "User Profile"
+            };
+
+            cardButtons.Add(ViewPostButton);
+            cardButtons.Add(ProfileButton);
 
             // Create the card
             HeroCard plCard = new HeroCard()
             {
-                Title = "Instagram Post",
-                Subtitle = "",
+                Title = (string) jObject["title"],
                 Images = cardImages,
                 Buttons = cardButtons
             };
