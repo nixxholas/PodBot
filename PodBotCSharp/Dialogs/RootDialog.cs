@@ -26,6 +26,9 @@ namespace PodBotCSharp.Dialogs
             switch (activity.Text)
             {
                 case "/addpost":
+                    // Debugging Purposes
+                    await context.PostAsync("Running AddPostDialog");
+
                     await Conversation.SendAsync(activity, () => new AddPostDialog());
                     break;
                 default:
