@@ -109,6 +109,8 @@ namespace PodBotCSharp.Dialogs
 
             // Post the data to the telegram channel
             await context.PostAsync(message);
+
+            context.Done(new object());
         }
     }
 }
