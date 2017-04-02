@@ -29,7 +29,7 @@ namespace PodBotCSharp.Dialogs
             var activity = await result as Activity;
 
             // Debugging Purposes
-            await context.PostAsync("ServiceUrl: " + activity.ServiceUrl);
+            //await context.PostAsync("ServiceUrl: " + activity.ServiceUrl);
 
             // We need to run a url check but i'll ignore that for now
 
@@ -106,20 +106,26 @@ namespace PodBotCSharp.Dialogs
 
             // Telegram Hook Test
             //await WebApiConfig.TelegramHook.SendTextMessageAsync("@HypeThePod", "Hello teLEGRAM");
-
-            BroadcastCardToTelegramChannel(plCard);
             
-            context.Done(new object());
-        }
-
-        private static async void BroadcastCardToTelegramChannel(HeroCard cardAttachment)
-        {
             // Send the image,
-            await WebApiConfig.TelegramHook.SendPhotoAsync(WebConfigurationManager.AppSettings["TelegramChannelId"],
-                cardAttachment.Images[0].Url, cardAttachment.Title);
+            //await WebApiConfig.TelegramHook.SendPhotoAsync(WebConfigurationManager.AppSettings["TelegramChannelId"],
+            //    cardAttachment.Images[0].Url, cardAttachment.Title);
 
             // Then send the actions/buttons
             //await WebApiConfig.TelegramHook.Send
+
+            // Create a connector to the platform first
+            var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
+
+            // Then create the Channel's object
+            var channelAccount = new ChannelAccount(name: "HypeThePod", id: "@HypeThePod");
+            //var botAccount = new ChannelAccount(name: "PodBot", id: "@IGPodBot");
+            message.Recipient = channelAccount;
+
+            await context.PostAsync(message);
+
+            context.Done(new object());
         }
+        
     }
 }
