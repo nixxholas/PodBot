@@ -86,7 +86,7 @@ namespace PodBotCSharp.Dialogs
             // Create the card
             HeroCard plCard = new HeroCard()
             {
-                Title = (string)jObject["title"],
+                Title = (string) jObject["title"],
                 Images = cardImages,
                 Buttons = cardButtons
             };
@@ -103,8 +103,20 @@ namespace PodBotCSharp.Dialogs
 
             // Telegram Hook Test
             //await WebApiConfig.TelegramHook.SendTextMessageAsync("@HypeThePod", "Hello teLEGRAM");
+
+            BroadcastCardToTelegramChannel(plCard);
             
             context.Done(new object());
+        }
+
+        private static async void BroadcastCardToTelegramChannel(HeroCard cardAttachment)
+        {
+            // Send the image,
+            await WebApiConfig.TelegramHook.SendPhotoAsync(WebConfigurationManager.AppSettings["TelegramChannelId"],
+                cardAttachment.Images[0].Url, cardAttachment.Title);
+
+            // Then send the actions/buttons
+            //await WebApiConfig.TelegramHook.Send
         }
     }
 }
