@@ -29,10 +29,9 @@ namespace PodBotCSharp.Dialogs
                     break;
                 default:
                     await context.PostAsync("Sorry I didn't get you.");
+                    context.Wait(MessageReceivedAsync);
                     break;
             }
-
-            context.Wait(MessageReceivedAsync);
         }
 
         private async Task PostTaskCompletion(IDialogContext context, IAwaitable<object> result)
