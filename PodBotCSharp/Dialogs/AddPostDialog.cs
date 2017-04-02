@@ -89,7 +89,7 @@ namespace PodBotCSharp.Dialogs
             // Create the card
             HeroCard plCard = new HeroCard()
             {
-                Title = (string) jObject["title"],
+                Title = (string)jObject["title"],
                 Images = cardImages,
                 Buttons = cardButtons
             };
@@ -97,6 +97,27 @@ namespace PodBotCSharp.Dialogs
             // Create the message
             // https://github.com/Microsoft/BotBuilder-Samples/tree/master/CSharp/cards-RichCards
             var message = context.MakeMessage();
+
+            // http://stackoverflow.com/questions/40008126/how-to-set-channeldata-for-a-custom-message-in-telegram
+            message.ChannelData = JObject.FromObject(new
+            {
+                chat_id = WebConfigurationManager.AppSettings["TelegramChannelId"],
+                text = plCard.Title,
+                reply_markup = new
+                {
+                    inline_keyboard = new dynamic[]
+                    {
+                                    new {
+                                        text = "View Post",
+                                        url = activity.Text
+                                    },
+                                    new {
+                                        content_type = "View Profile",
+                                        url = (string)jObject["author_url"]
+                                    }
+                    },
+                }
+            });
 
             // Add the card to the message as an attachment
             message.Attachments.Add(plCard.ToAttachment());
@@ -106,7 +127,7 @@ namespace PodBotCSharp.Dialogs
 
             // Telegram Hook Test
             //await WebApiConfig.TelegramHook.SendTextMessageAsync("@HypeThePod", "Hello teLEGRAM");
-            
+
             // Send the image,
             //await WebApiConfig.TelegramHook.SendPhotoAsync(WebConfigurationManager.AppSettings["TelegramChannelId"],
             //    cardAttachment.Images[0].Url, cardAttachment.Title);
@@ -115,21 +136,15 @@ namespace PodBotCSharp.Dialogs
             //await WebApiConfig.TelegramHook.Send
 
             // Create a connector to the platform first
-            var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
-            var channelAccount = new ChannelAccount(name: "HypeThePod", id: "@HypeThePod");
-            var botAccount = new ChannelAccount(name: "PodBot", id: "@IGPodBot");
+            //var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
+            //var channelAccount = new ChannelAccount(name: "HypeThePod", id: "@HypeThePod");
+            //var botAccount = new ChannelAccount(name: "PodBot", id: "@IGPodBot");
 
             // Create the activity for the channel message
-            IMessageActivity channelMessage = Activity.CreateMessageActivity();
-            channelMessage.Type = ActivityTypes.Message;
-            channelMessage.From = botAccount;
-            channelMessage.Recipient = channelAccount;
-            channelMessage.Attachments.Add(plCard.ToAttachment());
-
-            await connector.Conversations.SendToConversationAsync((Activity) channelMessage);
+            //Activity channelActivity = new Activity();
 
             context.Done(new object());
         }
-        
+
     }
 }
