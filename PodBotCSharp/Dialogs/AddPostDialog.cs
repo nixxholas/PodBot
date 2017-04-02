@@ -12,17 +12,16 @@ namespace PodBotCSharp.Dialogs
     [Serializable]
     public class AddPostDialog : IDialog<object>
     {
-        public Task StartAsync(IDialogContext context)
+        public async Task StartAsync(IDialogContext context)
         {
-            context.Wait(MessageReceivedAsync);
+            // Debugging Purposes
+            await context.PostAsync("Running AddPostDialog");
 
-            return Task.CompletedTask;
+            context.Wait(MessageReceivedAsync);
         }
 
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
         {
-            // Debugging Purposes
-            await context.PostAsync("Running AddPostDialog");
 
             var activity = await result as Activity;
 
