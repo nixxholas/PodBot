@@ -14,9 +14,7 @@ namespace PodBotCSharp
         // Retrieving an appsetting from the web.config
         // http://stackoverflow.com/questions/4595288/reading-a-key-from-the-web-config-using-configurationmanager
         public static readonly TelegramBotClient TelegramHook = new TelegramBotClient(WebConfigurationManager.AppSettings["TelegramBotToken"]);
-        public static readonly ChannelAccount TelegramChannel = new ChannelAccount("@HypeThePod", "HypeThePod");
-
-
+        
         public static void Register(HttpConfiguration config)
         {
             // Json settings

@@ -28,6 +28,9 @@ namespace PodBotCSharp.Dialogs
         {
             var activity = await result as Activity;
 
+            // Debugging Purposes
+            await context.PostAsync("ServiceUrl: " + activity.ServiceUrl);
+
             // We need to run a url check but i'll ignore that for now
 
             // Call Instagram's oembed API to retrieve post metadata
