@@ -147,6 +147,8 @@ namespace PodBotCSharp.Dialogs
             channelMessage.Locale = "en-us";
             var response = await connector.Conversations.SendToConversationAsync((Activity) channelMessage);
 
+            await context.PostAsync("responseid: " + response.Id);
+
             context.Done(new object());
         }
 
