@@ -33,7 +33,7 @@ server.post('/api/messages', connector.listen());
 
 const bot = new builder.UniversalBot(connector);
 
-// const telegrambot = new TelegramBotAPI(process.env.TELEGRAM_BOT_TOKEN, {polling: true});
+const telegrambot = new TelegramBotAPI(process.env.TELEGRAM_BOT_TOKEN, {polling: true});
 // telegrambot.setWebHook(`https://http://igpodbot.azurewebsites.net/api/messages/bot${process.env.TELEGRAM_BOT_TOKEN}`, {
 // });
 
@@ -162,20 +162,20 @@ bot.dialog('/addpost',  [
     (session, results) => {
         session.sendTyping();
         
-        // telegrambot.sendPhoto(process.env.TELEGRAM_CHANNEL_ID, results.response, 
-        // // Optional Variables
-        // {
-        //     caption: `By ${session.userData.handle}`,
-        //     // Adding option objects
-        //     // https://github.com/yagop/node-telegram-bot-api/issues/109
-        //     reply_markup: JSON.stringify({
-        //         inline_keyboard: [
-        //         [{ text: 'View Post', url: results.response }],
-        //         //[{ text: 'Like Post', url: '2' }],
-        //         //[{ text: 'Some button text 3', callback_data: '3' }]
-        //         ]
-        //     })
-        // });
+        telegrambot.sendPhoto(process.env.TELEGRAM_CHANNEL_ID, results.response, 
+        // Optional Variables
+        {
+            caption: `By ${session.userData.handle}`,
+            // Adding option objects
+            // https://github.com/yagop/node-telegram-bot-api/issues/109
+            reply_markup: JSON.stringify({
+                inline_keyboard: [
+                [{ text: 'View Post', url: results.response }],
+                //[{ text: 'Like Post', url: '2' }],
+                //[{ text: 'Some button text 3', callback_data: '3' }]
+                ]
+            })
+        });
  
         session.send('Sent to the channel!');
         session.endDialog();
