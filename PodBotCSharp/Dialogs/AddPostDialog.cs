@@ -132,16 +132,19 @@ namespace PodBotCSharp.Dialogs
             //await WebApiConfig.TelegramHook.SendPhotoAsync(WebConfigurationManager.AppSettings["TelegramChannelId"],
             //    cardAttachment.Images[0].Url, cardAttachment.Title);
 
-            // Then send the actions/buttons
-            //await WebApiConfig.TelegramHook.Send
-
             // Create a connector to the platform first
-            //var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
-            //var channelAccount = new ChannelAccount(name: "HypeThePod", id: "@HypeThePod");
-            //var botAccount = new ChannelAccount(name: "PodBot", id: "@IGPodBot");
+            var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
+            var channelAccount = new ChannelAccount(name: "HypeThePod", id: "@HypeThePod");
+            var botAccount = new ChannelAccount(name: "PodBot", id: "@IGPodBot");
 
             // Create the activity for the channel message
-            //Activity channelActivity = new Activity();
+            IMessageActivity channelMessage = Activity.CreateMessageActivity();
+            channelMessage.From = botAccount;
+            channelMessage.Recipient = channelAccount;
+            channelMessage.Conversation = new ConversationAccount() { Id = "{conversationId}" };
+            channelMessage.Text = (string) jObject["title"];
+            channelMessage.Locale = "en-us";
+            var response = await connector.Conversations.SendToConversationAsync((Activity) channelMessage);
 
             context.Done(new object());
         }
