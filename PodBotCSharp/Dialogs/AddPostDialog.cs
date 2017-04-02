@@ -10,7 +10,7 @@ using Newtonsoft.Json.Linq;
 namespace PodBotCSharp.Dialogs
 {
     [Serializable]
-    public class PostDialog : IDialog<object>
+    public class AddPostDialog : IDialog<object>
     {
         public Task StartAsync(IDialogContext context)
         {
@@ -22,22 +22,13 @@ namespace PodBotCSharp.Dialogs
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
         {
             var activity = await result as Activity;
-            var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
 
             // Handling conversational information
             // https://www.youtube.com/watch?v=TyrpJBM3nJU
-            switch (activity.Text)
-            {
-                case "addpost":
-                    await context.PostAsync("Can I have the URL to the post?");
+            await context.PostAsync("Can I have the URL to the post?");
 
-                    // Head to the next method and wait for the reply
-                    context.Wait(ProcessPostData);
-                    break;
-                default:
-                    await context.PostAsync("Sorry I didn't get you.");
-                    break;
-            }
+            // Head to the next method and wait for the reply
+            context.Wait(ProcessPostData);
         }
 
         private async Task ProcessPostData(IDialogContext context, IAwaitable<object> result)
@@ -45,7 +36,7 @@ namespace PodBotCSharp.Dialogs
             var activity = await result as Activity;
 
             // We need to run a url check but i'll ignore that for now
-            
+
             // Call Instagram's oembed API to retrieve post metadata
             string OembedAPIURL = "https://api.instagram.com/oembed?url=" + activity.Text;
 
@@ -63,7 +54,8 @@ namespace PodBotCSharp.Dialogs
                     var msg = response.Content.ReadAsStringAsync().Result;
 
                     jObject = JObject.Parse(msg);
-                } else
+                }
+                else
                 {
                     await context.PostAsync("Please enter a valid url.");
 
@@ -77,10 +69,10 @@ namespace PodBotCSharp.Dialogs
 
             // Create the card images
             List<CardImage> cardImages = new List<CardImage>();
-            cardImages.Add(new CardImage(url: (string) jObject["thumbnail_url"]));
+            cardImages.Add(new CardImage(url: (string)jObject["thumbnail_url"]));
 
             // Create the action buttons for the card first
-            List <CardAction> cardButtons = new List<CardAction>();
+            List<CardAction> cardButtons = new List<CardAction>();
 
             CardAction ViewPostButton = new CardAction()
             {
@@ -101,7 +93,7 @@ namespace PodBotCSharp.Dialogs
             // Create the card
             HeroCard plCard = new HeroCard()
             {
-                Title = (string) jObject["title"],
+                Title = (string)jObject["title"],
                 Images = cardImages,
                 Buttons = cardButtons
             };
