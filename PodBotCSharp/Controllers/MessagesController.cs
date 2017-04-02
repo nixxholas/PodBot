@@ -23,11 +23,11 @@ namespace PodBotCSharp
                 Console.WriteLine(activity.Text);
                 switch (activity.Text)
                 {
-                    case "/addpost":
+                    case "addpost":
                         await Conversation.SendAsync(activity, () => new PostDialog());
                         break;
                     default:
-                        await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
+                        await Conversation.SendAsync(activity, () => new RootDialog());
                         break;
                 }
             }

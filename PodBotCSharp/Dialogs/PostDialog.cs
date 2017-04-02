@@ -28,7 +28,7 @@ namespace PodBotCSharp.Dialogs
             // https://www.youtube.com/watch?v=TyrpJBM3nJU
             switch (activity.Text)
             {
-                case "/addpost":
+                case "addpost":
                     await context.PostAsync("Can I have the URL to the post?");
 
                     // Head to the next method and wait for the reply

@@ -19,7 +19,6 @@ namespace PodBotCSharp.Dialogs
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
         {
             var activity = await result as Activity;
-            var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
 
             await context.PostAsync("Sorry I didn't get you.");
 
