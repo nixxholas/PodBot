@@ -21,6 +21,9 @@ namespace PodBotCSharp.Dialogs
 
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
         {
+            // Debugging Purposes
+            await context.PostAsync("Running AddPostDialog");
+
             var activity = await result as Activity;
 
             // Handling conversational information

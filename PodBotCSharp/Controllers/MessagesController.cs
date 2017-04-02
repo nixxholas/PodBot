@@ -20,7 +20,15 @@ namespace PodBotCSharp
         {
             if (activity.Type == ActivityTypes.Message)
             {
-                await Conversation.SendAsync(activity, () => new RootDialog());
+                switch (activity.Text)
+                {
+                    case "/addpost":
+                        await Conversation.SendAsync(activity, () => new AddPostDialog());
+                        break;
+                    default:
+                        await Conversation.SendAsync(activity, () => new RootDialog());
+                        break;
+                }
             }
             else
             {
