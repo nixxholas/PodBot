@@ -142,8 +142,9 @@ namespace PodBotCSharp.Dialogs
                 }
             };
 
-            var reqAction = new SendMessage(WebConfigurationManager.AppSettings["TelegramChannelId"], (string)jObject["title"])
-            { ReplyMarkup = keyb };
+            var reqAction = new SendPhoto(WebConfigurationManager.AppSettings["TelegramChannelId"], new FileToSend(activity.Text))
+            {   Caption = (string) jObject["title"],
+                ReplyMarkup = keyb };
             WebApiConfig.TelegramHook.MakeRequestAsync(reqAction).Wait();
 
             // Send the image,
