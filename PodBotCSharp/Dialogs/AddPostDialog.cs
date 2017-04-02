@@ -136,12 +136,13 @@ namespace PodBotCSharp.Dialogs
             var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
             var channelAccount = new ChannelAccount(name: "HypeThePod", id: "@HypeThePod");
             var botAccount = new ChannelAccount(name: "PodBot", id: "@IGPodBot");
+            var conversationId = await connector.Conversations.CreateDirectConversationAsync(botAccount, channelAccount);
 
             // Create the activity for the channel message
             IMessageActivity channelMessage = Activity.CreateMessageActivity();
             channelMessage.From = botAccount;
             channelMessage.Recipient = channelAccount;
-            channelMessage.Conversation = new ConversationAccount() { Id = "{conversationId}" };
+            channelMessage.Conversation = new ConversationAccount() { Id = conversationId.Id };
             channelMessage.Text = (string) jObject["title"];
             channelMessage.Locale = "en-us";
             var response = await connector.Conversations.SendToConversationAsync((Activity) channelMessage);
