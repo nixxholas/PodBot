@@ -22,7 +22,6 @@ namespace PodBotCSharp.Dialogs
 
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
         {
-
             var activity = await result as Activity;
 
             // Handling conversational information
@@ -84,7 +83,7 @@ namespace PodBotCSharp.Dialogs
             };
             CardAction ProfileButton = new CardAction()
             {
-                Value = activity.Text,
+                Value = (string)jObject["author_url"],
                 Type = "openUrl",
                 Title = "User Profile"
             };
@@ -107,8 +106,10 @@ namespace PodBotCSharp.Dialogs
             // Add the card to the message as an attachment
             message.Attachments.Add(plCard.ToAttachment());
 
-            // Post the data to the telegram channel
+            // Show the user a preview and post the data to the telegram channel
             await context.PostAsync(message);
+
+            await WebApiConfig.TelegramHook.SendTextMessageAsync("@HypeThePod", "Hello teLEGRAM");
 
             context.Done(new object());
         }
