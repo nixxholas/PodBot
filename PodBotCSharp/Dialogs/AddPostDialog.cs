@@ -116,13 +116,17 @@ namespace PodBotCSharp.Dialogs
 
             // Create a connector to the platform first
             var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
-
-            // Then create the Channel's object
             var channelAccount = new ChannelAccount(name: "HypeThePod", id: "@HypeThePod");
-            //var botAccount = new ChannelAccount(name: "PodBot", id: "@IGPodBot");
-            message.Recipient = channelAccount;
+            var botAccount = new ChannelAccount(name: "PodBot", id: "@IGPodBot");
 
-            await connector.Conversations.SendToConversationAsync((Activity) message);
+            // Create the activity for the channel message
+            IMessageActivity channelMessage = Activity.CreateMessageActivity();
+            channelMessage.Type = ActivityTypes.Message;
+            channelMessage.From = botAccount;
+            channelMessage.Recipient = channelAccount;
+            channelMessage.Attachments.Add(plCard.ToAttachment());
+
+            await connector.Conversations.SendToConversationAsync((Activity) channelMessage);
 
             context.Done(new object());
         }
