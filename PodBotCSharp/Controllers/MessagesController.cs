@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
+using System;
+using PodBotCSharp.Dialogs;
 
 namespace PodBotCSharp
 {
@@ -18,12 +20,21 @@ namespace PodBotCSharp
         {
             if (activity.Type == ActivityTypes.Message)
             {
-                await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
+                switch (activity.Text)
+                {
+                    case "/addpost":
+                        await Conversation.SendAsync(activity, () => new PostDialog());
+                        break;
+                    default:
+                        await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
+                        break;
+                }
             }
             else
             {
                 HandleSystemMessage(activity);
             }
+
             var response = Request.CreateResponse(HttpStatusCode.OK);
             return response;
         }
