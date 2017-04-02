@@ -2,9 +2,9 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Web.Configuration;
-using Telegram.Bot;
 using System.Collections.Generic;
 using Microsoft.Bot.Connector;
+using NetTelegramBotApi;
 
 namespace PodBotCSharp
 {
@@ -13,7 +13,7 @@ namespace PodBotCSharp
         // TelegramBotClient Handling
         // Retrieving an appsetting from the web.config
         // http://stackoverflow.com/questions/4595288/reading-a-key-from-the-web-config-using-configurationmanager
-        public static readonly TelegramBotClient TelegramHook = new TelegramBotClient(WebConfigurationManager.AppSettings["TelegramBotToken"]);
+        public static readonly TelegramBot TelegramHook = new TelegramBot(WebConfigurationManager.AppSettings["TelegramBotToken"]);
         public static readonly ChannelAccount botTelegramAccount = new ChannelAccount(WebConfigurationManager.AppSettings["TelegramChannelId"], "PodBot");
 
         public static void Register(HttpConfiguration config)
@@ -28,7 +28,7 @@ namespace PodBotCSharp
                 Formatting = Newtonsoft.Json.Formatting.Indented,
                 NullValueHandling = NullValueHandling.Ignore,
             };
-            
+
             // Web API configuration and services
 
             // Web API routes
