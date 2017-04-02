@@ -122,7 +122,7 @@ namespace PodBotCSharp.Dialogs
             //var botAccount = new ChannelAccount(name: "PodBot", id: "@IGPodBot");
             message.Recipient = channelAccount;
 
-            await context.PostAsync(message);
+            await connector.Conversations.SendToConversationAsync((Activity) message);
 
             context.Done(new object());
         }
