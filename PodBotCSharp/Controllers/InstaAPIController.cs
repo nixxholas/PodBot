@@ -26,6 +26,11 @@ namespace PodBotCSharp.Controllers
             return View();
         }
 
+        public ActionResult InstagramOAuth()
+        {
+            return View();
+        }
+
         // POST: InstaAuth/Create
         [HttpPost]
         public ActionResult Create(FormCollection collection)
