@@ -129,6 +129,8 @@ namespace PodBotCSharp.Dialogs
             await context.PostAsync(message);
 
             // Telegram Hook Test
+
+            // First, create the buttons first
             var keyb = new InlineKeyboardMarkup()
             {
                 InlineKeyboard = new InlineKeyboardButton[][]
@@ -138,35 +140,25 @@ namespace PodBotCSharp.Dialogs
                             Text = "View Post",
                             Url = activity.Text
                         }
+                    },
+                    new[]
+                    {
+                        new InlineKeyboardButton()
+                        {
+                            Text = "View User's Profile",
+                            Url = (string)jObject["author_url"],
+                        }
                     }
                 }
             };
 
+            // Now, we create the actual message
             var reqAction = new SendPhoto(WebConfigurationManager.AppSettings["TelegramChannelId"], new FileToSend(activity.Text))
             {   Caption = (string) jObject["title"],
                 ReplyMarkup = keyb };
-            WebApiConfig.TelegramHook.MakeRequestAsync(reqAction).Wait();
 
-            // Send the image,
-            //await WebApiConfig.TelegramHook.SendPhotoAsync(WebConfigurationManager.AppSettings["TelegramChannelId"],
-            //   cardAttachment.Images[0].Url, cardAttachment.Title);
-            
-            // Create a connector to the platform first
-            //var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
-            //var channelAccount = new ChannelAccount(name: "HypeThePod", id: "@HypeThePod");
-            //var botAccount = new ChannelAccount(name: "PodBot", id: "@IGPodBot");
-            //var conversationId = await connector.Conversations.CreateDirectConversationAsync(botAccount, channelAccount);
-
-            // Create the activity for the channel message
-            //IMessageActivity channelMessage = Activity.CreateMessageActivity();
-            //channelMessage.From = botAccount;
-            //channelMessage.Recipient = channelAccount;
-            //channelMessage.Conversation = new ConversationAccount() { Id = conversationId.Id };
-            //channelMessage.Text = (string) jObject["title"];
-            //channelMessage.Locale = "en-us";
-            //var channelResponse = await connector.Conversations.SendToConversationAsync((Activity) channelMessage);
-
-            //await context.PostAsync("responseid: " + channelResponse.Id);
+            // Send it to via the Telegram Hook
+            WebApiConfig.TelegramHook.MakeRequestAsync(reqAction).Wait(); 
 
             context.Done(new object());
         }
