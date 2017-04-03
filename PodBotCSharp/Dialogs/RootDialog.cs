@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
-using System.Web.Configuration;
+using PodBotCSharp.Dialogs.Posts;
 
 namespace PodBotCSharp.Dialogs
 {
@@ -26,6 +26,9 @@ namespace PodBotCSharp.Dialogs
                 case "/addpost":
                     //await context.PostAsync("Calling AddPostDialog");
                     context.Call(new AddPostDialog(), PostTaskCompletion);
+                    break;
+                case "/setprofile":
+                    context.Call(new SetProfileDialog(), PostTaskCompletion);
                     break;
                 default:
                     await context.PostAsync("Sorry I didn't get you.");

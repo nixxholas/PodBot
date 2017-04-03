@@ -10,7 +10,7 @@ using System.Net;
 using NetTelegramBotApi.Requests;
 using NetTelegramBotApi.Types;
 
-namespace PodBotCSharp.Dialogs
+namespace PodBotCSharp.Dialogs.Posts
 {
     [Serializable]
     public class AddPostDialog : IDialog<object>
@@ -154,7 +154,7 @@ namespace PodBotCSharp.Dialogs
             };
 
             // Now, we create the actual message
-            var reqAction = new SendPhoto(WebConfigurationManager.AppSettings["TelegramChannelId"], new FileToSend(activity.Text))
+            var reqAction = new SendPhoto(WebConfigurationManager.AppSettings["TelegramTestChannelId"], new FileToSend(activity.Text))
             {   Caption = "Photo by " + (string)jObject["author_name"],
                 ReplyMarkup = keyb };
             
