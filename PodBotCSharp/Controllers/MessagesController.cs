@@ -20,6 +20,7 @@ namespace PodBotCSharp
         {
             if (activity.Type == ActivityTypes.Message)
             {
+                if (!activity.From.Name.Equals("TestThePod") || !activity.From.Name.Equals("HypeThePod"))
                 await Conversation.SendAsync(activity, () => new RootDialog());
             }
             else
