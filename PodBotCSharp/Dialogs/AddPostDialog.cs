@@ -154,7 +154,7 @@ namespace PodBotCSharp.Dialogs
 
             // Now, we create the actual message
             var reqAction = new SendPhoto(WebConfigurationManager.AppSettings["TelegramChannelId"], new FileToSend(activity.Text))
-            {   Caption = (string) jObject["title"],
+            {   Caption = "Photo by " + (string)jObject["author_name"],
                 ReplyMarkup = keyb };
 
             // Send it to via the Telegram Hook
