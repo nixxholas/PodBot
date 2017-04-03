@@ -19,7 +19,7 @@ namespace PodBotCSharp.Dialogs
             var activity = await result as Activity;
 
             // Debugging Purposes
-            //await context.PostAsync("activity.Text: " + activity.Text);
+            await context.PostAsync("activity.From.Id: " + activity.From.Name + " | activity.From.Name: " + activity.From.Name);
 
             switch (activity.Text)
             {
