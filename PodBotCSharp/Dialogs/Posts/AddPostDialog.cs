@@ -93,7 +93,7 @@ namespace PodBotCSharp.Dialogs.Posts
             // Create the card
             HeroCard cardAttachment = new HeroCard()
             {
-                Title = (string)jObject["title"],
+                Title = "Photo by @" + (string)jObject["author_name"],
                 Images = cardImages,
                 Buttons = cardButtons
             };
@@ -155,7 +155,7 @@ namespace PodBotCSharp.Dialogs.Posts
 
             // Now, we create the actual message
             var reqAction = new SendPhoto(WebConfigurationManager.AppSettings["TelegramTestChannelId"], new FileToSend(activity.Text))
-            {   Caption = "Photo by " + (string)jObject["author_name"],
+            {   Caption = "Photo by @" + (string)jObject["author_name"],
                 ReplyMarkup = keyb };
             
             // Send it to via the Telegram Hook
