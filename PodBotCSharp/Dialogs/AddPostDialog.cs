@@ -60,6 +60,7 @@ namespace PodBotCSharp.Dialogs
 
                     // Loop this method
                     context.Wait(MessageReceivedAsync);
+                    return;
                 }
             }
 
@@ -141,14 +142,14 @@ namespace PodBotCSharp.Dialogs
                             Url = activity.Text
                         }
                     },
-                    new[]
-                    {
-                        new InlineKeyboardButton()
-                        {
-                            Text = "View User's Profile",
-                            Url = (string)jObject["author_url"],
-                        }
-                    }
+                    //new[]
+                    //{
+                    //    new InlineKeyboardButton()
+                    //    {
+                    //        Text = "View User's Profile",
+                    //        Url = (string)jObject["author_url"],
+                    //    }
+                    //}
                 }
             };
 
@@ -156,7 +157,7 @@ namespace PodBotCSharp.Dialogs
             var reqAction = new SendPhoto(WebConfigurationManager.AppSettings["TelegramChannelId"], new FileToSend(activity.Text))
             {   Caption = "Photo by " + (string)jObject["author_name"],
                 ReplyMarkup = keyb };
-
+            
             // Send it to via the Telegram Hook
             WebApiConfig.TelegramHook.MakeRequestAsync(reqAction).Wait(); 
 
