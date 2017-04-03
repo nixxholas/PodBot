@@ -22,8 +22,8 @@ namespace PodBotCSharp.Dialogs
             // Debugging Purposes
             //await context.PostAsync("activity.From.Id: " + activity.From.Name + " | activity.From.Name: " + activity.From.Name);
 
-            if (!activity.From.Name.Equals(WebConfigurationManager.AppSettings["TelegramTestChannelId"])
-                && !activity.From.Name.Equals(WebConfigurationManager.AppSettings["TelegramChannelId"]))
+            if (!activity.From.Name.Equals(WebConfigurationManager.AppSettings["TelegramTestChannelId"].TrimStart('@'))
+                && !activity.From.Name.Equals(WebConfigurationManager.AppSettings["TelegramChannelId"].TrimStart('@')))
             {
                 switch (activity.Text)
                 {
