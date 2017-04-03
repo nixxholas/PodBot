@@ -105,7 +105,7 @@ namespace PodBotCSharp.Dialogs.Posts
             // http://stackoverflow.com/questions/40008126/how-to-set-channeldata-for-a-custom-message-in-telegram
             var sendMessageObject = JObject.FromObject(new
             {
-                chat_id = WebConfigurationManager.AppSettings["TelegramChannelId"],
+                chat_id = WebConfigurationManager.AppSettings["TelegramTestChannelId"],
                 text = cardAttachment.Title,
                 reply_markup = new
                 {
