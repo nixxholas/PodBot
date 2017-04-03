@@ -23,6 +23,7 @@ namespace PodBotCSharp.Dialogs
             //await context.PostAsync("activity.From.Id: " + activity.From.Name + " | activity.From.Name: " + activity.From.Name);
 
             if (!activity.From.Name.Equals(WebConfigurationManager.AppSettings["TelegramTestChannelId"].TrimStart('@'))
+                // http://stackoverflow.com/questions/3222125/fastest-way-to-remove-first-char-in-a-string
                 && !activity.From.Name.Equals(WebConfigurationManager.AppSettings["TelegramChannelId"].TrimStart('@')))
             {
                 switch (activity.Text)

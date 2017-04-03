@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using System.Net;
 using NetTelegramBotApi.Requests;
 using NetTelegramBotApi.Types;
+using InstaSharp;
 
 namespace PodBotCSharp.Dialogs.Posts
 {
@@ -22,7 +23,7 @@ namespace PodBotCSharp.Dialogs.Posts
 
             // Handling conversational information
             // https://www.youtube.com/watch?v=TyrpJBM3nJU
-            await context.PostAsync("Can I have the URL to the post?");
+            await context.PostAsync("May I have your Instagram handle?");
 
             context.Wait(MessageReceivedAsync);
         }
@@ -163,6 +164,5 @@ namespace PodBotCSharp.Dialogs.Posts
 
             context.Done(new object());
         }
-
     }
 }

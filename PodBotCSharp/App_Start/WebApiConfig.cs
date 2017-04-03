@@ -14,6 +14,11 @@ namespace PodBotCSharp
         // Retrieving an appsetting from the web.config
         // http://stackoverflow.com/questions/4595288/reading-a-key-from-the-web-config-using-configurationmanager
         public static readonly TelegramBot TelegramHook = new TelegramBot(WebConfigurationManager.AppSettings["TelegramBotToken"]);
+        // InstagramClient Handling
+        // InstagramConfig config = new InstagramConfig(WebConfigurationManager.AppSettings["InstagramClientId"]
+        //, WebConfigurationManager.AppSettings["InstagramClientId"], WebConfigurationManager.AppSettings["InstagramRedirectUri"]
+        //, WebConfigurationManager.AppSettings["InstagramRealtimeUri"]);
+
         public static readonly ChannelAccount botTelegramAccount = new ChannelAccount(WebConfigurationManager.AppSettings["TelegramChannelId"], "PodBot");
 
         public static void Register(HttpConfiguration config)
