@@ -19,11 +19,16 @@ namespace PodBotCSharp.Dialogs.Posts
         public async Task StartAsync(IDialogContext context)
         {
             // Debugging Purposes
-            //await context.PostAsync("Running AddPostDialog");
+            //await context.PostAsync("Running SetProfileDialog");
 
-            // Handling conversational information
-            // https://www.youtube.com/watch?v=TyrpJBM3nJU
-            await context.PostAsync("May I have your Instagram handle?");
+            // Create a scope that define what we're gonna use
+            var scopes = new List<OAuth.Scope>();
+            scopes.Add(OAuth.Scope.Basic);
+            scopes.Add(OAuth.Scope.Likes);
+            scopes.Add(OAuth.Scope.Comments);
+
+            var link = OAuth.AuthLink(WebConfigurationManager.AppSettings["InstagramOAuthURL"] + "authorize", WebConfigurationManager.AppSettings["InstagramClientId"]
+                , WebConfigurationManager.AppSettings["InstagramRedirectUri"], scopes, OAuth.ResponseType.Code);
 
             context.Wait(MessageReceivedAsync);
         }
