@@ -1,7 +1,9 @@
-﻿using System;
+﻿using InstaSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 
 namespace PodBotCSharp.Controllers
@@ -26,9 +28,18 @@ namespace PodBotCSharp.Controllers
             return View();
         }
 
-        public ActionResult InstagramOAuth()
+        public ActionResult Login()
         {
-            return View();
+            // Create a scope that define what we're gonna use
+            var scopes = new List<OAuth.Scope>();
+            scopes.Add(OAuth.Scope.Basic);
+            scopes.Add(OAuth.Scope.Likes);
+            scopes.Add(OAuth.Scope.Comments);
+
+            var link = OAuth.AuthLink(WebConfigurationManager.AppSettings["InstagramOAuthURL"] + "authorize", WebConfigurationManager.AppSettings["InstagramClientId"]
+                , WebConfigurationManager.AppSettings["InstagramRedirectUri"], scopes, OAuth.ResponseType.Code);
+
+            return Redirect(link);
         }
 
         // POST: InstaAuth/Create
