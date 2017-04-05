@@ -46,11 +46,8 @@ namespace PodBotCSharp.Controllers
         public async Task<ActionResult> OAuth(string code)
         {
             // add this code to the auth object
-            //public InstagramConfig();
-            //public InstagramConfig(string clientId, string clientSecret);
-            //public InstagramConfig(string clientId, string clientSecret, string redirectUri);
-            //public InstagramConfig(string clientId, string clientSecret, string redirectUri, string callbackUri);
-            var auth = new OAuth(new InstagramConfig(WebConfigurationManager.AppSettings["InstagramClientId"], WebConfigurationManager.AppSettings["InstagramClientSecret"]));
+            var auth = new OAuth(new InstagramConfig(WebConfigurationManager.AppSettings["InstagramClientId"], WebConfigurationManager.AppSettings["InstagramClientSecret"]
+                , WebConfigurationManager.AppSettings["InstagramRedirectUri"], ""));
 
             // now we have to call back to instagram and include the code they gave us
             // along with our client secret
