@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
@@ -32,14 +33,36 @@ namespace PodBotCSharp.Controllers
         {
             // Create a scope that define what we're gonna use
             var scopes = new List<OAuth.Scope>();
-            scopes.Add(OAuth.Scope.Basic);
-            scopes.Add(OAuth.Scope.Likes);
-            scopes.Add(OAuth.Scope.Comments);
+            scopes.Add(InstaSharp.OAuth.Scope.Basic);
+            scopes.Add(InstaSharp.OAuth.Scope.Likes);
+            scopes.Add(InstaSharp.OAuth.Scope.Comments);
 
-            var link = OAuth.AuthLink(WebConfigurationManager.AppSettings["InstagramOAuthURL"] + "authorize", WebConfigurationManager.AppSettings["InstagramClientId"]
-                , WebConfigurationManager.AppSettings["InstagramRedirectUri"], scopes, OAuth.ResponseType.Code);
+            var link = InstaSharp.OAuth.AuthLink(WebConfigurationManager.AppSettings["InstagramOAuthURL"] + "authorize", WebConfigurationManager.AppSettings["InstagramClientId"]
+                , WebConfigurationManager.AppSettings["InstagramRedirectUri"], scopes, InstaSharp.OAuth.ResponseType.Code);
 
             return Redirect(link);
+        }
+
+        public async Task<ActionResult> OAuth(string code)
+        {
+            // add this code to the auth object
+            //public InstagramConfig();
+            //public InstagramConfig(string clientId, string clientSecret);
+            //public InstagramConfig(string clientId, string clientSecret, string redirectUri);
+            //public InstagramConfig(string clientId, string clientSecret, string redirectUri, string callbackUri);
+            var auth = new OAuth(new InstagramConfig(WebConfigurationManager.AppSettings["InstagramClientId"], WebConfigurationManager.AppSettings["InstagramClientSecret"]));
+
+            // now we have to call back to instagram and include the code they gave us
+            // along with our client secret
+            var oauthResponse = await auth.RequestToken(code);
+
+            // both the client secret and the token are considered sensitive data, so we won't be
+            // sending them back to the browser. we'll only store them temporarily.  If a user's session times
+            // out, they will have to click on the authenticate button again - sorry bout yer luck.
+            Session.Add("InstaSharp.AuthInfo", oauthResponse);
+
+            // all done, lets redirect to the home controller which will send some intial data to the app
+            return RedirectToAction("Index");
         }
 
         // POST: InstaAuth/Create
