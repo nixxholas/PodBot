@@ -16,7 +16,7 @@ namespace PodBotCSharp.Controllers.Instagram
     public class InstaOkController : ApiController
     {
         [HttpGet]
-        public async Task<IHttpActionResult> GetAsync([FromBody]string code)
+        public async Task<IHttpActionResult> GetAsync(string code)
         {
             // add this code to the auth object
             var auth = new OAuth(new InstagramConfig(WebConfigurationManager.AppSettings["InstagramClientId"], WebConfigurationManager.AppSettings["InstagramClientSecret"]
