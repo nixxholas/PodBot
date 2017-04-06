@@ -12,21 +12,23 @@ namespace PodBotCSharp.Controllers
 {
     public class InstaController : ApiController
     {
-        public async Task<IHttpActionResult> Get()
+        [HttpGet]
+        public IHttpActionResult Get()
         {
             // Sessions
             // http://stackoverflow.com/questions/11478244/asp-net-web-api-session-or-something
             if (HttpContext.Current.Session["InstaSharp.AuthInfo"] != null)
             {
                 var oAuthResponse = HttpContext.Current.Session["InstaSharp.AuthInfo"] as OAuthResponse;
-                
+
                 return Ok(oAuthResponse.User);
-            }  else
+            }
+            else
             {
                 return Login();
             }
         }
-        
+
         // GET: InstaAuth/Create
         public IHttpActionResult Create()
         {
@@ -58,8 +60,8 @@ namespace PodBotCSharp.Controllers
 
             return Redirect(link);
         }
-
-        public async Task<IHttpActionResult> Post(string code)
+        
+        public async Task<IHttpActionResult> Get(string code)
         {
             // add this code to the auth object
             var auth = new OAuth(new InstagramConfig(WebConfigurationManager.AppSettings["InstagramClientId"], WebConfigurationManager.AppSettings["InstagramClientSecret"]
