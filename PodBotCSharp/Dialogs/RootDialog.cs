@@ -19,6 +19,13 @@ namespace PodBotCSharp.Dialogs
         {
             var activity = await result as Activity;
 
+            // Get access token from bot state
+            ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
+            StateClient stateClient = activity.GetStateClient();
+            BotState botState = new BotState(stateClient);
+            BotData botData = await botState.GetUserDataAsync(activity.ChannelId, activity.From.Id);
+            string token = botData.GetProperty<string>("igAccessToken");
+
             // Debugging Purposes
             //await context.PostAsync("activity.From.Id: " + activity.From.Name + " | activity.From.Name: " + activity.From.Name);
 
@@ -30,10 +37,10 @@ namespace PodBotCSharp.Dialogs
                 {
                     case "/addpost":
                         //await context.PostAsync("Calling AddPostDialog");
-                        context.Call(new AddPostDialog(), PostTaskCompletion);
+                        context.Call(new SetIGProfileDialog(), PostTaskCompletion);
                         break;
                     case "/setprofile":
-                        context.Call(new SetProfileDialog(), PostTaskCompletion);
+                        context.Call(new SetIGProfileDialog(), PostTaskCompletion);
                         break;
                     default:
                         await context.PostAsync("Sorry I didn't get you.");

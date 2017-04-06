@@ -1,5 +1,6 @@
 ﻿using InstaSharp;
 using InstaSharp.Models.Responses;
+using Microsoft.Bot.Connector;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -52,7 +53,7 @@ namespace PodBotCSharp.Controllers
             scopes.Add(OAuth.Scope.Follower_List);
             scopes.Add(OAuth.Scope.Relationships);
 
-            var link = InstaSharp.OAuth.AuthLink(WebConfigurationManager.AppSettings["InstagramOAuthURL"] + "authorize", WebConfigurationManager.AppSettings["InstagramClientId"]
+            var link = OAuth.AuthLink(WebConfigurationManager.AppSettings["InstagramOAuthURL"] + "authorize", WebConfigurationManager.AppSettings["InstagramClientId"]
                 , WebConfigurationManager.AppSettings["InstagramRedirectUri"], scopes, InstaSharp.OAuth.ResponseType.Code);
 
             return Redirect(link);
@@ -74,8 +75,21 @@ namespace PodBotCSharp.Controllers
             // http://stackoverflow.com/questions/11478244/asp-net-web-api-session-or-something
             HttpContext.Current.Session.Add("InstaSharp.AuthInfo", oauthResponse);
 
+            // Store access token to bot state
+            ///// Here we store the only access token.
+            ///// Please store refresh token, too.
+            var botCred = new MicrosoftAppCredentials(
+                WebConfigurationManager.AppSettings["MicrosoftAppId"],
+                WebConfigurationManager.AppSettings["MicrosoftAppPassword"]);
+            var stateClient = new StateClient(botCred);
+            BotState botState = new BotState(stateClient);
+            BotData botData = new BotData(eTag: "*");
+            botData.SetProperty<string>("igAccessToken", code);
+            await stateClient.BotState.SetUserDataAsync("telegram", code, botData);
+
             // all done, lets redirect to the home controller which will send some intial data to the app
             return Redirect("Index");
         }
+        
     }
 }

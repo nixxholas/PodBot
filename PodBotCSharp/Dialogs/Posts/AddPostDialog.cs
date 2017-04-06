@@ -13,7 +13,7 @@ using NetTelegramBotApi.Types;
 namespace PodBotCSharp.Dialogs.Posts
 {
     [Serializable]
-    public class AddPostDialog : IDialog<object>
+    public class SetIGProfileDialog : IDialog<object>
     {
         public async Task StartAsync(IDialogContext context)
         {
