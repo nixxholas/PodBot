@@ -21,6 +21,7 @@ namespace PodBotCSharp.Dialogs
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
         {
             var activity = await result as Activity;
+            string token = null;
 
             // Get access token from bot state
             ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
@@ -31,10 +32,10 @@ namespace PodBotCSharp.Dialogs
             // Debugging Purposes
             //await context.PostAsync("activity.From.Id: " + activity.From.Name + " | activity.From.Name: " + activity.From.Name);
 
-            string token = botData.GetProperty<string>("igAccessToken");
-
-            // Debugging Purposes
-            await context.PostAsync(token);
+            if (WebApiConfig.UserBase.ContainsKey(activity.From.Id))
+            {
+                token = WebApiConfig.UserBase[activity.From.Id].InstagramToken;
+            }
 
             // if the does not have the token
             if (token == null)
