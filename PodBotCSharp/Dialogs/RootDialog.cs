@@ -34,7 +34,7 @@ namespace PodBotCSharp.Dialogs
             string token = botData.GetProperty<string>("igAccessToken");
 
             // Debugging Purposes
-            await connector.Conversations.SendToConversationAsync(token);
+            await context.PostAsync(token);
 
             // if the does not have the token
             if (token == null)
