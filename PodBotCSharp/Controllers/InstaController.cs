@@ -45,9 +45,12 @@ namespace PodBotCSharp.Controllers
         {
             // Create a scope that define what we're gonna use
             var scopes = new List<OAuth.Scope>();
-            scopes.Add(InstaSharp.OAuth.Scope.Basic);
-            scopes.Add(InstaSharp.OAuth.Scope.Likes);
-            scopes.Add(InstaSharp.OAuth.Scope.Comments);
+            scopes.Add(OAuth.Scope.Basic);
+            scopes.Add(OAuth.Scope.Likes);
+            scopes.Add(OAuth.Scope.Comments);
+            scopes.Add(OAuth.Scope.Public_Content);
+            scopes.Add(OAuth.Scope.Follower_List);
+            scopes.Add(OAuth.Scope.Relationships);
 
             var link = InstaSharp.OAuth.AuthLink(WebConfigurationManager.AppSettings["InstagramOAuthURL"] + "authorize", WebConfigurationManager.AppSettings["InstagramClientId"]
                 , WebConfigurationManager.AppSettings["InstagramRedirectUri"], scopes, InstaSharp.OAuth.ResponseType.Code);
@@ -55,7 +58,7 @@ namespace PodBotCSharp.Controllers
             return Redirect(link);
         }
 
-        public async Task<IHttpActionResult> OAuth(string code)
+        public async Task<IHttpActionResult> Post(string code)
         {
             // add this code to the auth object
             var auth = new OAuth(new InstagramConfig(WebConfigurationManager.AppSettings["InstagramClientId"], WebConfigurationManager.AppSettings["InstagramClientSecret"]
