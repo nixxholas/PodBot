@@ -61,7 +61,7 @@ namespace PodBotCSharp.Controllers
             return Redirect(link);
         }
         
-        public async Task<IHttpActionResult> Get(string code)
+        public async Task<IHttpActionResult> Get([FromBody]string code)
         {
             // add this code to the auth object
             var auth = new OAuth(new InstagramConfig(WebConfigurationManager.AppSettings["InstagramClientId"], WebConfigurationManager.AppSettings["InstagramClientSecret"]
@@ -86,7 +86,7 @@ namespace PodBotCSharp.Controllers
             var stateClient = new StateClient(botCred);
             BotState botState = new BotState(stateClient);
             BotData botData = new BotData(eTag: "*");
-            botData.SetProperty<string>("igAccessToken", code);
+            botData.SetProperty("igAccessToken", code);
             await stateClient.BotState.SetUserDataAsync("telegram", code, botData);
 
             // all done, lets redirect to the home controller which will send some intial data to the app
