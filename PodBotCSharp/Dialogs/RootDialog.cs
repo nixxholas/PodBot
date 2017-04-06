@@ -55,28 +55,32 @@ namespace PodBotCSharp.Dialogs
 
                 await connector.Conversations.SendToConversationAsync(replyToConversation);
             }
+            else
+            {
 
-            if (!activity.From.Name.Equals(WebConfigurationManager.AppSettings["TelegramTestChannelId"].TrimStart('@'))
-                // http://stackoverflow.com/questions/3222125/fastest-way-to-remove-first-char-in-a-string
-                && !activity.From.Name.Equals(WebConfigurationManager.AppSettings["TelegramChannelId"].TrimStart('@')))
-            {
-                switch (activity.Text)
+                if (!activity.From.Name.Equals(WebConfigurationManager.AppSettings["TelegramTestChannelId"].TrimStart('@'))
+                    // http://stackoverflow.com/questions/3222125/fastest-way-to-remove-first-char-in-a-string
+                    && !activity.From.Name.Equals(WebConfigurationManager.AppSettings["TelegramChannelId"].TrimStart('@')))
                 {
-                    case "/addpost":
-                        //await context.PostAsync("Calling AddPostDialog");
-                        context.Call(new AddPostDialog(), PostTaskCompletion);
-                        break;
-                    case "/setprofile":
-                        context.Call(new SetIGProfileDialog(botData), PostTaskCompletion);
-                        break;
-                    default:
-                        await context.PostAsync("Sorry I didn't get you.");
-                        context.Wait(MessageReceivedAsync);
-                        break;
+                    switch (activity.Text)
+                    {
+                        case "/addpost":
+                            //await context.PostAsync("Calling AddPostDialog");
+                            context.Call(new AddPostDialog(), PostTaskCompletion);
+                            break;
+                        case "/setprofile":
+                            context.Call(new SetIGProfileDialog(botData), PostTaskCompletion);
+                            break;
+                        default:
+                            await context.PostAsync("Sorry I didn't get you.");
+                            context.Wait(MessageReceivedAsync);
+                            break;
+                    }
                 }
-            } else
-            {
-                context.Done(new object());
+                else
+                {
+                    context.Done(new object());
+                }
             }
         }
 
