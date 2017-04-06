@@ -13,12 +13,6 @@ namespace PodBotCSharp.Controllers
     {
         public async Task<IHttpActionResult> Get()
         {
-            return Index();
-        }
-
-        // GET: InstaAuth
-        public IHttpActionResult Index()
-        {
             // Sessions
             // http://stackoverflow.com/questions/11478244/asp-net-web-api-session-or-something
             var oAuthResponse = HttpContext.Current.Session["InstaSharp.AuthInfo"] as OAuthResponse;
@@ -30,7 +24,7 @@ namespace PodBotCSharp.Controllers
 
             return Ok(oAuthResponse.User);
         }
-
+        
         // GET: InstaAuth/Create
         public IHttpActionResult Create()
         {
