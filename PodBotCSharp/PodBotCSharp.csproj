@@ -180,6 +180,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\InstaAPIController.cs" />
+    <Compile Include="Controllers\InstaController.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Dialogs\Posts\AddPostDialog.cs" />
     <Compile Include="Dialogs\RootDialog.cs" />

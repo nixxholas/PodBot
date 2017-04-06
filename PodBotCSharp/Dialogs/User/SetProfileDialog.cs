@@ -21,6 +21,8 @@ namespace PodBotCSharp.Dialogs.Posts
             // Debugging Purposes
             //await context.PostAsync("Running SetProfileDialog");
 
+            // Send the user to the Login API
+
             context.Wait(MessageReceivedAsync);
         }
 

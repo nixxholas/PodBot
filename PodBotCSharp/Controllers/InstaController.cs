@@ -1,43 +1,57 @@
 ﻿using InstaSharp;
 using InstaSharp.Models.Responses;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
-using System.Web.Mvc;
+using System.Web.Http;
 
 namespace PodBotCSharp.Controllers
 {
-    public class InstaAPIController : Controller
+    public class InstaController : ApiController
     {
         // GET: InstaAuth
-        public ActionResult Index()
+        [HttpGet]
+        [ActionName("Index")]
+        public IHttpActionResult Index()
         {
-            var oAuthResponse = Session["InstaSharp.AuthInfo"] as OAuthResponse;
+            // Sessions
+            // http://stackoverflow.com/questions/11478244/asp-net-web-api-session-or-something
+            var oAuthResponse = HttpContext.Current.Session["InstaSharp.AuthInfo"] as OAuthResponse;
 
             if (oAuthResponse == null)
             {
-                return RedirectToAction("Login");
+                return Redirect("Login");
             }
 
-            return View(oAuthResponse.User);
+            return Ok(oAuthResponse.User);
         }
 
         // GET: InstaAuth/Details/5
-        public ActionResult Details(int id)
+        [HttpGet]
+        public IHttpActionResult Details(int id)
         {
-            return View();
+            return Ok();
         }
 
         // GET: InstaAuth/Create
-        public ActionResult Create()
+        [HttpPost]
+        public IHttpActionResult Create()
         {
-            return View();
+            // Sessions
+            // http://stackoverflow.com/questions/11478244/asp-net-web-api-session-or-something
+            var oAuthResponse = HttpContext.Current.Session["InstaSharp.AuthInfo"] as OAuthResponse;
+
+            if (oAuthResponse == null)
+            {
+                return Redirect("Login");
+            }
+
+            return Ok(oAuthResponse.User);
         }
-        
-        public ActionResult Login()
+
+        [HttpGet]
+        public IHttpActionResult Login()
         {
             // Create a scope that define what we're gonna use
             var scopes = new List<OAuth.Scope>();
@@ -50,8 +64,8 @@ namespace PodBotCSharp.Controllers
 
             return Redirect(link);
         }
-        
-        public async Task<ActionResult> OAuth(string code)
+
+        public async Task<IHttpActionResult> OAuth(string code)
         {
             // add this code to the auth object
             var auth = new OAuth(new InstagramConfig(WebConfigurationManager.AppSettings["InstagramClientId"], WebConfigurationManager.AppSettings["InstagramClientSecret"]
@@ -64,67 +78,11 @@ namespace PodBotCSharp.Controllers
             // both the client secret and the token are considered sensitive data, so we won't be
             // sending them back to the browser. we'll only store them temporarily.  If a user's session times
             // out, they will have to click on the authenticate button again - sorry bout yer luck.
-            Session.Add("InstaSharp.AuthInfo", oauthResponse);
+            // http://stackoverflow.com/questions/11478244/asp-net-web-api-session-or-something
+            HttpContext.Current.Session.Add("InstaSharp.AuthInfo", oauthResponse);
 
             // all done, lets redirect to the home controller which will send some intial data to the app
-            return RedirectToAction("Index");
-        }
-
-        // POST: InstaAuth/Create
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: InstaAuth/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: InstaAuth/Edit/5
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: InstaAuth/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: InstaAuth/Delete/5
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return Redirect("Index");
         }
     }
 }
