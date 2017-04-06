@@ -39,6 +39,15 @@ namespace PodBotCSharp.Dialogs
             // if the does not have the token
             if (token == null)
             {
+                // Add him to the userbase list if not already
+                if (!WebApiConfig.UserBase.ContainsKey(activity.From.Id))
+                {
+                    WebApiConfig.UserBase.Add(activity.From.Id, new Models.UserChannelData()
+                    {
+                        ChannelId = activity.ChannelId
+                    });
+                }
+
                 Activity replyToConversation = activity.CreateReply();
                 replyToConversation.Recipient = activity.From;
                 replyToConversation.Type = "message";
@@ -47,7 +56,7 @@ namespace PodBotCSharp.Dialogs
                 List<CardAction> cardButtons = new List<CardAction>();
                 CardAction plButton = new CardAction()
                 {
-                    Value = $"{System.Configuration.ConfigurationManager.AppSettings["InstagramLocalOAuthUri"]}",
+                    Value = $"{System.Configuration.ConfigurationManager.AppSettings["InstagramLocalOAuthUri"]}/?id=" + activity.From.Id,
                     Type = "signin",
                     Title = "Allow Access"
                 };

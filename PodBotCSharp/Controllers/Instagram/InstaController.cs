@@ -13,13 +13,18 @@ namespace PodBotCSharp.Controllers.Instagram
     public class InstaController : ApiController
     {
         [HttpGet]
-        public IHttpActionResult Get()
+        public IHttpActionResult Get(string id)
         {
             // Sessions
             // http://stackoverflow.com/questions/11478244/asp-net-web-api-session-or-something
             if (HttpContext.Current.Session["InstaSharp.AuthInfo"] != null)
             {
                 var oAuthResponse = HttpContext.Current.Session["InstaSharp.AuthInfo"] as OAuthResponse;
+
+                WebApiConfig.UserBase[id].InstagramId = oAuthResponse.User.Id;
+                WebApiConfig.UserBase[id].InstagramToken = oAuthResponse.AccessToken;
+                WebApiConfig.UserBase[id].IgHandle = oAuthResponse.User.Username;
+                WebApiConfig.UserBase[id].ProfilePictureURL = oAuthResponse.User.ProfilePicture;
 
                 return Ok(oAuthResponse.User);
             }
@@ -30,7 +35,7 @@ namespace PodBotCSharp.Controllers.Instagram
         }
 
         // GET: InstaAuth/Create
-        public IHttpActionResult Create()
+        public IHttpActionResult Create(string id)
         {
             // Sessions
             // http://stackoverflow.com/questions/11478244/asp-net-web-api-session-or-something
@@ -40,6 +45,11 @@ namespace PodBotCSharp.Controllers.Instagram
             {
                 return Login();
             }
+
+            WebApiConfig.UserBase[id].InstagramId = oAuthResponse.User.Id;
+            WebApiConfig.UserBase[id].InstagramToken = oAuthResponse.AccessToken;
+            WebApiConfig.UserBase[id].IgHandle = oAuthResponse.User.Username;
+            WebApiConfig.UserBase[id].ProfilePictureURL = oAuthResponse.User.ProfilePicture;
 
             return Ok(oAuthResponse.User);
         }

@@ -22,7 +22,7 @@ namespace PodBotCSharp
 
         public static readonly ChannelAccount botTelegramAccount = new ChannelAccount(WebConfigurationManager.AppSettings["TelegramChannelId"], "PodBot");
 
-        public static Dictionary<string, User> UserBase = new Dictionary<string, User>();
+        public static Dictionary<string, UserChannelData> UserBase = new Dictionary<string, UserChannelData>();
 
         public static void Register(HttpConfiguration config)
         {
