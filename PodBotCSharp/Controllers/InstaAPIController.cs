@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
+using System.Web.Http;
 using System.Web.Mvc;
 
 namespace PodBotCSharp.Controllers
@@ -71,7 +72,6 @@ namespace PodBotCSharp.Controllers
         }
 
         // POST: InstaAuth/Create
-        [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
             try
@@ -93,7 +93,6 @@ namespace PodBotCSharp.Controllers
         }
 
         // POST: InstaAuth/Edit/5
-        [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
             try
@@ -115,7 +114,6 @@ namespace PodBotCSharp.Controllers
         }
 
         // POST: InstaAuth/Delete/5
-        [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
             try
