@@ -88,7 +88,7 @@ namespace PodBotCSharp.Dialogs
                     {
                         case "/addpost":
                             //await context.PostAsync("Calling AddPostDialog");
-                            context.Call(new AddPostDialog(), PostTaskCompletion);
+                            context.Call(new AddPostDialog(botData), PostTaskCompletion);
                             break;
                         case "/shareprofile":
                             context.Call(new ShareIGProfileDialog(botData), PostTaskCompletion);

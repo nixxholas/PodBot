@@ -14,16 +14,16 @@ namespace PodBotCSharp.Dialogs.User
     [Serializable]
     public class ShareIGProfileDialog : IDialog<object>
     {
-        private BotData _userActivity { get; set; }
+        private BotData _botData { get; set; }
         // Default Constructor for now
         public ShareIGProfileDialog(BotData userActivity) {
-            _userActivity = userActivity;
+            _botData = userActivity;
             
         }
     
         public async Task StartAsync(IDialogContext context)
         {
-            OAuthResponse oauth = _userActivity.GetProperty<OAuthResponse>("InstaSharp.OAuth");
+            OAuthResponse oauth = _botData.GetProperty<OAuthResponse>("InstaSharp.OAuth");
 
             // Successful Data Retrieval
             await context.PostAsync("Okay! I'll share your profile for you!");
@@ -54,24 +54,7 @@ namespace PodBotCSharp.Dialogs.User
             // Create the message
             // https://github.com/Microsoft/BotBuilder-Samples/tree/master/CSharp/cards-RichCards
             var message = context.MakeMessage();
-
-            // http://stackoverflow.com/questions/40008126/how-to-set-channeldata-for-a-custom-message-in-telegram
-            var sendMessageObject = JObject.FromObject(new
-            {
-                chat_id = WebConfigurationManager.AppSettings["TelegramTestChannelId"],
-                text = cardAttachment.Title,
-                reply_markup = new
-                {
-                    inline_keyboard = new dynamic[]
-                    {
-                                    new {
-                                        text = "View Profile",
-                                        url = "http://instagram.com/" + oauth.User.Username
-                                    }
-                    },
-                }
-            });
-
+            
             // Add the card to the message as an attachment
             message.Attachments.Add(cardAttachment.ToAttachment());
 
