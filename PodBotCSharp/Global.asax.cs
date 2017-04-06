@@ -13,5 +13,12 @@ namespace PodBotCSharp
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }
+
+        // http://stackoverflow.com/questions/21999409/web-api-2-session
+        // http://stackoverflow.com/questions/19758221/webapi-2-attribute-routing-enable-session-state
+        protected void Application_PostAuthorizeRequest()
+        {
+            HttpContext.Current.SetSessionStateBehavior(System.Web.SessionState.SessionStateBehavior.Required);
+        }
     }
 }

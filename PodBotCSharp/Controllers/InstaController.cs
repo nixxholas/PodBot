@@ -15,14 +15,15 @@ namespace PodBotCSharp.Controllers
         {
             // Sessions
             // http://stackoverflow.com/questions/11478244/asp-net-web-api-session-or-something
-            var oAuthResponse = HttpContext.Current.Session["InstaSharp.AuthInfo"] as OAuthResponse;
-
-            if (oAuthResponse == null)
+            if (HttpContext.Current.Session["InstaSharp.AuthInfo"] != null)
+            {
+                var oAuthResponse = HttpContext.Current.Session["InstaSharp.AuthInfo"] as OAuthResponse;
+                
+                return Ok(oAuthResponse.User);
+            }  else
             {
                 return Login();
             }
-
-            return Ok(oAuthResponse.User);
         }
         
         // GET: InstaAuth/Create
