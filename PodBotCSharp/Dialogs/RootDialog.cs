@@ -37,44 +37,44 @@ namespace PodBotCSharp.Dialogs
                 token = WebApiConfig.UserBase[activity.From.Id].InstagramToken;
             }
 
-            // if the does not have the token
-            if (token == null)
+            if (!activity.From.Name.Equals(WebConfigurationManager.AppSettings["TelegramTestChannelId"].TrimStart('@'))
+                // http://stackoverflow.com/questions/3222125/fastest-way-to-remove-first-char-in-a-string
+                && !activity.From.Name.Equals(WebConfigurationManager.AppSettings["TelegramChannelId"].TrimStart('@')))
             {
-                // Add him to the userbase list if not already
-                if (!WebApiConfig.UserBase.ContainsKey(activity.From.Id))
+                // if the does not have the token
+                if (token == null)
                 {
-                    WebApiConfig.UserBase.Add(activity.From.Id, new Models.UserChannelData()
+                    // Add him to the userbase list if not already
+                    if (!WebApiConfig.UserBase.ContainsKey(activity.From.Id))
                     {
-                        ChannelId = activity.ChannelId
-                    });
+                        WebApiConfig.UserBase.Add(activity.From.Id, new Models.UserChannelData()
+                        {
+                            ChannelId = activity.ChannelId
+                        });
+                    }
+
+                    Activity replyToConversation = activity.CreateReply();
+                    replyToConversation.Recipient = activity.From;
+                    replyToConversation.Type = "message";
+
+                    replyToConversation.Attachments = new List<Attachment>();
+                    List<CardAction> cardButtons = new List<CardAction>();
+                    CardAction plButton = new CardAction()
+                    {
+                        Value = $"{System.Configuration.ConfigurationManager.AppSettings["InstagramLocalOAuthUri"]}/?id=" + activity.From.Id,
+                        Type = "signin",
+                        Title = "Allow Access"
+                    };
+                    cardButtons.Add(plButton);
+                    SigninCard plCard = new SigninCard("Please Authorize Instagram Access", new List<CardAction>() { plButton });
+                    Attachment plAttachment = plCard.ToAttachment();
+                    replyToConversation.Attachments.Add(plAttachment);
+
+                    var reply = await connector.Conversations.SendToConversationAsync(replyToConversation);
                 }
-
-                Activity replyToConversation = activity.CreateReply();
-                replyToConversation.Recipient = activity.From;
-                replyToConversation.Type = "message";
-
-                replyToConversation.Attachments = new List<Attachment>();
-                List<CardAction> cardButtons = new List<CardAction>();
-                CardAction plButton = new CardAction()
+                else
                 {
-                    Value = $"{System.Configuration.ConfigurationManager.AppSettings["InstagramLocalOAuthUri"]}/?id=" + activity.From.Id,
-                    Type = "signin",
-                    Title = "Allow Access"
-                };
-                cardButtons.Add(plButton);
-                SigninCard plCard = new SigninCard("Please Authorize Instagram Access", new List<CardAction>() { plButton });
-                Attachment plAttachment = plCard.ToAttachment();
-                replyToConversation.Attachments.Add(plAttachment);
 
-                var reply = await connector.Conversations.SendToConversationAsync(replyToConversation);
-            }
-            else
-            {
-
-                if (!activity.From.Name.Equals(WebConfigurationManager.AppSettings["TelegramTestChannelId"].TrimStart('@'))
-                    // http://stackoverflow.com/questions/3222125/fastest-way-to-remove-first-char-in-a-string
-                    && !activity.From.Name.Equals(WebConfigurationManager.AppSettings["TelegramChannelId"].TrimStart('@')))
-                {
                     switch (activity.Text)
                     {
                         case "/addpost":
@@ -90,10 +90,10 @@ namespace PodBotCSharp.Dialogs
                             break;
                     }
                 }
-                else
-                {
-                    context.Done(new object());
-                }
+            }
+            else
+            {
+                context.Done(new object());
             }
         }
 
