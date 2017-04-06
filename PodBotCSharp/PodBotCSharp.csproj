@@ -184,7 +184,7 @@
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Dialogs\Posts\AddPostDialog.cs" />
     <Compile Include="Dialogs\RootDialog.cs" />
-    <Compile Include="Dialogs\User\SetIGProfileDialog.cs" />
+    <Compile Include="Dialogs\User\ShareIGProfileDialog.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
