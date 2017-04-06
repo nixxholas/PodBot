@@ -45,8 +45,21 @@ namespace PodBotCSharp.Controllers.Instagram
             botData.SetProperty("igAccessToken", code);
             await stateClient.BotState.SetUserDataAsync("telegram", code, botData);
             
-            // all done, lets return ok
-            return Redirect(WebConfigurationManager.AppSettings["InstagramLocalOAuthUri"]);
+            if (HttpContext.Current.Session["UserChannelId"] != null 
+                && WebApiConfig.UserBase.ContainsKey(HttpContext.Current.Session["UserChannelId"].ToString()))
+            {
+                WebApiConfig.UserBase[HttpContext.Current.Session["UserChannelId"].ToString()].InstagramToken = oauthResponse.AccessToken;
+                WebApiConfig.UserBase[HttpContext.Current.Session["UserChannelId"].ToString()].IgHandle = oauthResponse.User.Username;
+                WebApiConfig.UserBase[HttpContext.Current.Session["UserChannelId"].ToString()].InstagramId = oauthResponse.User.Id;
+                WebApiConfig.UserBase[HttpContext.Current.Session["UserChannelId"].ToString()].Name = oauthResponse.User.FullName;
+                WebApiConfig.UserBase[HttpContext.Current.Session["UserChannelId"].ToString()].ProfilePictureURL = oauthResponse.User.ProfilePicture;
+
+                // all done, lets return ok
+                return Ok("Done! You may return to PodBot");
+            } else
+            {
+                return BadRequest("Try harder..");
+            }
         }
     }
 }

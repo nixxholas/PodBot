@@ -15,17 +15,15 @@ namespace PodBotCSharp.Controllers.Instagram
         [HttpGet]
         public IHttpActionResult Get(string id)
         {
+            // Add the user's channelid in session
+            HttpContext.Current.Session.Add("UserChannelId", id);
+
             // Sessions
             // http://stackoverflow.com/questions/11478244/asp-net-web-api-session-or-something
             if (HttpContext.Current.Session["InstaSharp.AuthInfo"] != null)
             {
                 var oAuthResponse = HttpContext.Current.Session["InstaSharp.AuthInfo"] as OAuthResponse;
-
-                WebApiConfig.UserBase[id].InstagramId = oAuthResponse.User.Id;
-                WebApiConfig.UserBase[id].InstagramToken = oAuthResponse.AccessToken;
-                WebApiConfig.UserBase[id].IgHandle = oAuthResponse.User.Username;
-                WebApiConfig.UserBase[id].ProfilePictureURL = oAuthResponse.User.ProfilePicture;
-
+                
                 return Ok(oAuthResponse.User);
             }
             else
@@ -35,8 +33,11 @@ namespace PodBotCSharp.Controllers.Instagram
         }
 
         // GET: InstaAuth/Create
-        public IHttpActionResult Create()
+        public IHttpActionResult Create(string id)
         {
+            // Add the user's channelid in session
+            HttpContext.Current.Session.Add("UserChannelId", id);
+
             // Sessions
             // http://stackoverflow.com/questions/11478244/asp-net-web-api-session-or-something
             var oAuthResponse = HttpContext.Current.Session["InstaSharp.AuthInfo"] as OAuthResponse;
@@ -45,7 +46,7 @@ namespace PodBotCSharp.Controllers.Instagram
             {
                 return Login();
             }
-            
+
             return Ok(oAuthResponse.User);
         }
 
