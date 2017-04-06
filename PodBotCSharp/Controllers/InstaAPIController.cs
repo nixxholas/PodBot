@@ -1,4 +1,5 @@
 ﻿using InstaSharp;
+using InstaSharp.Models.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +10,19 @@ using System.Web.Mvc;
 
 namespace PodBotCSharp.Controllers
 {
-    [Route("api/[controller]")]
     public class InstaAPIController : Controller
     {
         // GET: InstaAuth
         public ActionResult Index()
         {
-            return View();
+            var oAuthResponse = Session["InstaSharp.AuthInfo"] as OAuthResponse;
+
+            if (oAuthResponse == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            return View(oAuthResponse.User);
         }
 
         // GET: InstaAuth/Details/5
@@ -29,7 +36,7 @@ namespace PodBotCSharp.Controllers
         {
             return View();
         }
-
+        
         public ActionResult Login()
         {
             // Create a scope that define what we're gonna use
@@ -43,7 +50,7 @@ namespace PodBotCSharp.Controllers
 
             return Redirect(link);
         }
-
+        
         public async Task<ActionResult> OAuth(string code)
         {
             // add this code to the auth object
