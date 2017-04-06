@@ -32,24 +32,6 @@ namespace PodBotCSharp.Controllers.Instagram
             }
         }
 
-        // GET: InstaAuth/Create
-        public IHttpActionResult Create(string id)
-        {
-            // Add the user's channelid in session
-            HttpContext.Current.Session.Add("UserChannelId", id);
-
-            // Sessions
-            // http://stackoverflow.com/questions/11478244/asp-net-web-api-session-or-something
-            var oAuthResponse = HttpContext.Current.Session["InstaSharp.AuthInfo"] as OAuthResponse;
-
-            if (oAuthResponse == null)
-            {
-                return Login();
-            }
-
-            return Ok(oAuthResponse.User);
-        }
-
         public IHttpActionResult Login()
         {
             // Create a scope that define what we're gonna use
