@@ -1,6 +1,7 @@
 ﻿using InstaSharp;
 using InstaSharp.Models.Responses;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
@@ -10,9 +11,12 @@ namespace PodBotCSharp.Controllers
 {
     public class InstaController : ApiController
     {
+        public async Task<IHttpActionResult> Get()
+        {
+            return Index();
+        }
+
         // GET: InstaAuth
-        [HttpGet]
-        [ActionName("Index")]
         public IHttpActionResult Index()
         {
             // Sessions
@@ -21,21 +25,13 @@ namespace PodBotCSharp.Controllers
 
             if (oAuthResponse == null)
             {
-                return Redirect("Login");
+                return Login();
             }
 
             return Ok(oAuthResponse.User);
         }
 
-        // GET: InstaAuth/Details/5
-        [HttpGet]
-        public IHttpActionResult Details(int id)
-        {
-            return Ok();
-        }
-
         // GET: InstaAuth/Create
-        [HttpPost]
         public IHttpActionResult Create()
         {
             // Sessions
@@ -44,13 +40,12 @@ namespace PodBotCSharp.Controllers
 
             if (oAuthResponse == null)
             {
-                return Redirect("Login");
+                return Login();
             }
 
             return Ok(oAuthResponse.User);
         }
 
-        [HttpGet]
         public IHttpActionResult Login()
         {
             // Create a scope that define what we're gonna use
