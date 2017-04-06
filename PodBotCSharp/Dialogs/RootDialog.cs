@@ -7,6 +7,8 @@ using System.Web.Configuration;
 using PodBotCSharp.Dialogs.User;
 using System.Collections.Generic;
 using System.Web;
+using InstaSharp.Models.Responses;
+using InstaSharp.Models;
 
 namespace PodBotCSharp.Dialogs
 {
@@ -74,6 +76,13 @@ namespace PodBotCSharp.Dialogs
                 }
                 else
                 {
+                    // Add the AuthData
+                    OAuthResponse Auth = new OAuthResponse()
+                    {
+                        AccessToken = token,
+                        User = new UserInfo { Id = WebApiConfig.UserBase[activity.From.Id].InstagramId }
+                    };
+                    botData.SetProperty("InstaSharp.OAuth", Auth);
 
                     switch (activity.Text)
                     {
@@ -81,8 +90,8 @@ namespace PodBotCSharp.Dialogs
                             //await context.PostAsync("Calling AddPostDialog");
                             context.Call(new AddPostDialog(), PostTaskCompletion);
                             break;
-                        case "/setprofile":
-                            context.Call(new SetIGProfileDialog(botData), PostTaskCompletion);
+                        case "/shareprofile":
+                            context.Call(new ShareIGProfileDialog(botData), PostTaskCompletion);
                             break;
                         default:
                             await context.PostAsync("Sorry I didn't get you.");
