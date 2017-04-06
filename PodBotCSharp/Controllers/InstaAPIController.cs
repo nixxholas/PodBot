@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace PodBotCSharp.Controllers
 {
+    [Route("api/[controller]")]
     public class InstaAPIController : Controller
     {
         // GET: InstaAuth
