@@ -5,6 +5,7 @@ using System.Web.Configuration;
 using System.Collections.Generic;
 using Microsoft.Bot.Connector;
 using NetTelegramBotApi;
+using PodBotCSharp.Models;
 
 namespace PodBotCSharp
 {
@@ -20,6 +21,8 @@ namespace PodBotCSharp
         //, WebConfigurationManager.AppSettings["InstagramRealtimeUri"]);
 
         public static readonly ChannelAccount botTelegramAccount = new ChannelAccount(WebConfigurationManager.AppSettings["TelegramChannelId"], "PodBot");
+
+        public static Dictionary<string, User> UserBase = new Dictionary<string, User>();
 
         public static void Register(HttpConfiguration config)
         {

@@ -33,6 +33,9 @@ namespace PodBotCSharp.Dialogs
 
             string token = botData.GetProperty<string>("igAccessToken");
 
+            // Debugging Purposes
+            await connector.Conversations.SendToConversationAsync(token);
+
             // if the does not have the token
             if (token == null)
             {
@@ -53,7 +56,7 @@ namespace PodBotCSharp.Dialogs
                 Attachment plAttachment = plCard.ToAttachment();
                 replyToConversation.Attachments.Add(plAttachment);
 
-                await connector.Conversations.SendToConversationAsync(replyToConversation);
+                var reply = await connector.Conversations.SendToConversationAsync(replyToConversation);
             }
             else
             {

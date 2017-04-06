@@ -1,5 +1,6 @@
 ﻿using InstaSharp;
 using Microsoft.Bot.Connector;
+using PodBotCSharp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +44,12 @@ namespace PodBotCSharp.Controllers.Instagram
             BotData botData = new BotData(eTag: "*");
             botData.SetProperty("igAccessToken", code);
             await stateClient.BotState.SetUserDataAsync("telegram", code, botData);
+
+            // Empty Code to test out the API
+            WebApiConfig.UserBase.Add(code, 
+                new User()
+                {
+                });
 
             // all done, lets return ok
             return Ok();
