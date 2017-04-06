@@ -4,6 +4,9 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using PodBotCSharp.Dialogs.Posts;
 using System.Web.Configuration;
+using PodBotCSharp.Dialogs.User;
+using System.Collections.Generic;
+using System.Web;
 
 namespace PodBotCSharp.Dialogs
 {
@@ -24,10 +27,34 @@ namespace PodBotCSharp.Dialogs
             StateClient stateClient = activity.GetStateClient();
             BotState botState = new BotState(stateClient);
             BotData botData = await botState.GetUserDataAsync(activity.ChannelId, activity.From.Id);
-            string token = botData.GetProperty<string>("igAccessToken");
 
             // Debugging Purposes
             //await context.PostAsync("activity.From.Id: " + activity.From.Name + " | activity.From.Name: " + activity.From.Name);
+
+            string token = botData.GetProperty<string>("igAccessToken");
+
+            // if the does not have the token
+            if (token == null)
+            {
+                Activity replyToConversation = activity.CreateReply();
+                replyToConversation.Recipient = activity.From;
+                replyToConversation.Type = "message";
+
+                replyToConversation.Attachments = new List<Attachment>();
+                List<CardAction> cardButtons = new List<CardAction>();
+                CardAction plButton = new CardAction()
+                {
+                    Value = $"{System.Configuration.ConfigurationManager.AppSettings["InstagramLocalOAuthUri"]}",
+                    Type = "signin",
+                    Title = "Allow Access"
+                };
+                cardButtons.Add(plButton);
+                SigninCard plCard = new SigninCard("Please Authorize Instagram Access", new List<CardAction>() { plButton });
+                Attachment plAttachment = plCard.ToAttachment();
+                replyToConversation.Attachments.Add(plAttachment);
+
+                await connector.Conversations.SendToConversationAsync(replyToConversation);
+            }
 
             if (!activity.From.Name.Equals(WebConfigurationManager.AppSettings["TelegramTestChannelId"].TrimStart('@'))
                 // http://stackoverflow.com/questions/3222125/fastest-way-to-remove-first-char-in-a-string
@@ -37,10 +64,10 @@ namespace PodBotCSharp.Dialogs
                 {
                     case "/addpost":
                         //await context.PostAsync("Calling AddPostDialog");
-                        context.Call(new SetIGProfileDialog(), PostTaskCompletion);
+                        context.Call(new AddPostDialog(), PostTaskCompletion);
                         break;
                     case "/setprofile":
-                        context.Call(new SetIGProfileDialog(), PostTaskCompletion);
+                        context.Call(new SetIGProfileDialog(botData), PostTaskCompletion);
                         break;
                     default:
                         await context.PostAsync("Sorry I didn't get you.");
