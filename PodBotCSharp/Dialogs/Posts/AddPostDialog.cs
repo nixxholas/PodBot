@@ -77,53 +77,54 @@ namespace PodBotCSharp.Dialogs.Posts
                 }
 
                 if (((string)jObject["author_url"]).Equals(oauth.User.Username))
+                {
                     // Successful Data Retrieval
                     await context.PostAsync("Okay! I'll broadcast your post for you!");
 
-                // Create the card images
-                List<CardImage> cardImages = new List<CardImage>();
-                cardImages.Add(new CardImage(url: (string)jObject["thumbnail_url"]));
+                    // Create the card images
+                    List<CardImage> cardImages = new List<CardImage>();
+                    cardImages.Add(new CardImage(url: (string)jObject["thumbnail_url"]));
 
-                // Create the action buttons for the card first
-                List<CardAction> cardButtons = new List<CardAction>();
+                    // Create the action buttons for the card first
+                    List<CardAction> cardButtons = new List<CardAction>();
 
-                CardAction ViewPostButton = new CardAction()
-                {
-                    Value = activity.Text,
-                    Type = "openUrl",
-                    Title = "View Post"
-                };
-                CardAction ProfileButton = new CardAction()
-                {
-                    Value = (string)jObject["author_url"],
-                    Type = "openUrl",
-                    Title = "User Profile"
-                };
-
-                cardButtons.Add(ViewPostButton);
-                cardButtons.Add(ProfileButton);
-
-                // Create the card
-                HeroCard cardAttachment = new HeroCard()
-                {
-                    Title = "Photo by @" + (string)jObject["author_name"],
-                    Images = cardImages,
-                    Buttons = cardButtons
-                };
-
-                // Create the message
-                // https://github.com/Microsoft/BotBuilder-Samples/tree/master/CSharp/cards-RichCards
-                var message = context.MakeMessage();
-
-                // http://stackoverflow.com/questions/40008126/how-to-set-channeldata-for-a-custom-message-in-telegram
-                var sendMessageObject = JObject.FromObject(new
-                {
-                    chat_id = WebConfigurationManager.AppSettings["TelegramTestChannelId"],
-                    text = cardAttachment.Title,
-                    reply_markup = new
+                    CardAction ViewPostButton = new CardAction()
                     {
-                        inline_keyboard = new dynamic[]
+                        Value = activity.Text,
+                        Type = "openUrl",
+                        Title = "View Post"
+                    };
+                    CardAction ProfileButton = new CardAction()
+                    {
+                        Value = (string)jObject["author_url"],
+                        Type = "openUrl",
+                        Title = "User Profile"
+                    };
+
+                    cardButtons.Add(ViewPostButton);
+                    cardButtons.Add(ProfileButton);
+
+                    // Create the card
+                    HeroCard cardAttachment = new HeroCard()
+                    {
+                        Title = "Photo by @" + (string)jObject["author_name"],
+                        Images = cardImages,
+                        Buttons = cardButtons
+                    };
+
+                    // Create the message
+                    // https://github.com/Microsoft/BotBuilder-Samples/tree/master/CSharp/cards-RichCards
+                    var message = context.MakeMessage();
+
+                    // http://stackoverflow.com/questions/40008126/how-to-set-channeldata-for-a-custom-message-in-telegram
+                    var sendMessageObject = JObject.FromObject(new
+                    {
+                        chat_id = WebConfigurationManager.AppSettings["TelegramTestChannelId"],
+                        text = cardAttachment.Title,
+                        reply_markup = new
                         {
+                            inline_keyboard = new dynamic[]
+                            {
                                     new {
                                         text = "View Post",
                                         url = activity.Text
@@ -132,49 +133,53 @@ namespace PodBotCSharp.Dialogs.Posts
                                         content_type = "View Profile",
                                         url = (string)jObject["author_url"]
                                     }
-                        },
-                    }
-                });
+                            },
+                        }
+                    });
 
-                // Add the card to the message as an attachment
-                message.Attachments.Add(cardAttachment.ToAttachment());
+                    // Add the card to the message as an attachment
+                    message.Attachments.Add(cardAttachment.ToAttachment());
 
-                // Show the user a preview and post the data to the telegram channel
-                await context.PostAsync(message);
+                    // Show the user a preview and post the data to the telegram channel
+                    await context.PostAsync(message);
 
-                // Telegram Hook Test
+                    // Telegram Hook Test
 
-                // First, create the buttons first
-                var keyb = new InlineKeyboardMarkup()
-                {
-                    InlineKeyboard = new InlineKeyboardButton[][]
+                    // First, create the buttons first
+                    var keyb = new InlineKeyboardMarkup()
                     {
+                        InlineKeyboard = new InlineKeyboardButton[][]
+                        {
                     new[] {
                         new InlineKeyboardButton() {
                             Text = "View Post",
                             Url = activity.Text
                         }
                     },
-                        //new[]
-                        //{
-                        //    new InlineKeyboardButton()
-                        //    {
-                        //        Text = "View User's Profile",
-                        //        Url = (string)jObject["author_url"],
-                        //    }
-                        //}
-                    }
-                };
+                            //new[]
+                            //{
+                            //    new InlineKeyboardButton()
+                            //    {
+                            //        Text = "View User's Profile",
+                            //        Url = (string)jObject["author_url"],
+                            //    }
+                            //}
+                        }
+                    };
 
-                // Now, we create the actual message
-                var reqAction = new SendPhoto(WebConfigurationManager.AppSettings["TelegramTestChannelId"], new FileToSend(activity.Text))
+                    // Now, we create the actual message
+                    var reqAction = new SendPhoto(WebConfigurationManager.AppSettings["TelegramTestChannelId"], new FileToSend(activity.Text))
+                    {
+                        Caption = "Photo by @" + (string)jObject["author_name"],
+                        ReplyMarkup = keyb
+                    };
+
+                    // Send it to via the Telegram Hook
+                    WebApiConfig.TelegramHook.MakeRequestAsync(reqAction).Wait();
+                } else
                 {
-                    Caption = "Photo by @" + (string)jObject["author_name"],
-                    ReplyMarkup = keyb
-                };
-
-                // Send it to via the Telegram Hook
-                WebApiConfig.TelegramHook.MakeRequestAsync(reqAction).Wait();
+                    await context.PostAsync("You can't share someone else's post");
+                }
             }
 
             context.Done(new object());
