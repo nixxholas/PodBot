@@ -83,6 +83,7 @@ namespace PodBotCSharp.Dialogs.Posts
                 {
                     // Successful Data Retrieval
                     await context.PostAsync("Okay! I'll broadcast your post for you!");
+                    await context.PostAsync("Preview: ");
 
                     // Create the card images
                     List<CardImage> cardImages = new List<CardImage>();
