@@ -76,6 +76,9 @@ namespace PodBotCSharp.Dialogs.Posts
                     }
                 }
 
+                // Debugging Purposes
+                await context.PostAsync(oauth.AccessToken);
+
                 if (((string)jObject["author_url"]).Equals(oauth.User.Username))
                 {
                     // Successful Data Retrieval
@@ -179,10 +182,11 @@ namespace PodBotCSharp.Dialogs.Posts
                 } else
                 {
                     await context.PostAsync("You can't share someone else's post");
+                    context.Wait(MessageReceivedAsync);
                 }
             }
 
-            context.Done(new object());
+            context.Done(new object()); 
         }
 
     }
